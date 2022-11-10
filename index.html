@@ -21,6 +21,7 @@
     const map = svg.append("g");
 
 
+
   const projectData = async function () {
     console.log('in async')
 
@@ -29,21 +30,18 @@
   const imdb_large = await d3.csv("imdb_1000.csv");
   const rotten_tomatoes = await d3.csv("rotten_tomatoes.csv");
 
+  
+  imdb_small.forEach( d => {
+        d.x = d3.randomUniform(10, width-10)();
+        d.y = d3.randomUniform(10, height-10)();
+      });
 
-  //editing in progress, not correct yet
-  const circleXscale = d3.scaleOrdinal()
-                  .domain(imdb_small)
-                  .range(0, 400);
-  const circleYscale = d3.scaleOrdinal()
-                  .domain(imdb_small)
-                  .range(0, 200);
-
-
+  
   let circles = map.selectAll("circle").data(imdb_small)
                             .join("circle")
                             .attr("r", 8)
-                            .attr("cx", d => circleXscale(d.imdb_title_id)) //want to evenly distribute circles on x axis
-                            .attr("cy", d => circleYscale(d.imdb_title_id)); //and evenly distribute in rows on y axis
+                            .attr("cx", d => d.x) //want to evenly distribute circles on x axis
+                            .attr("cy", d => d.y); //and evenly distribute in rows on y axis
                             // .attr("fill", //colors based on filter and y position)
 
   }

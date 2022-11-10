@@ -12,18 +12,43 @@
 <body>
   <h1>INFO 3300 - Project 2</h1>
   <h3>Members: Josette, Laura, Peter, Steve Min</h3>
+  <svg id="svg1" height="400" width="400"></svg> 
+
   <script>
+    const svg = d3.select("#svg1");
+    const width = svg.attr("width");
+    const height = svg.attr("height");
+    const map = svg.append("g");
+
 
   const projectData = async function () {
+    console.log('in async')
 
   //Movie names on the top 100 are 'original_title', top 1000 are 'Series_Title', and RT are 'Name'
   const imdb_small = await d3.csv("imdb_100.csv");
   const imdb_large = await d3.csv("imdb_1000.csv");
   const rotten_tomatoes = await d3.csv("rotten_tomatoes.csv");
 
+
+  //editing in progress, not correct yet
+  const circleXscale = d3.scaleOrdinal()
+                  .domain(imdb_small)
+                  .range(0, 400);
+  const circleYscale = d3.scaleOrdinal()
+                  .domain(imdb_small)
+                  .range(0, 200);
+
+
+  let circles = map.selectAll("circle").data(imdb_small)
+                            .join("circle")
+                            .attr("r", 8)
+                            .attr("cx", d => circleXscale(d.imdb_title_id)) //want to evenly distribute circles on x axis
+                            .attr("cy", d => circleYscale(d.imdb_title_id)); //and evenly distribute in rows on y axis
+                            // .attr("fill", //colors based on filter and y position)
+
   }
 
-
+projectData();
 
 </script>
 </body>

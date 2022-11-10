@@ -5,6 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <style>
+    .dotchart {
+      margin-left: 500px;
+    }
+    .svgclass {
+      border-style: solid;
+      border-color: black;
+      padding: 5px;
+    }
+    .content {
+      display: flex;
+      flex-direction: row;
+    }
   </style>
   <title>INFO 3300-Project 2</title>
 </head>
@@ -13,9 +25,22 @@
   <h1>INFO 3300 - Project 2</h1>
   <h3>Members: Josette, Laura, Peter, Steve Min</h3>
 
+  <div class="content">
+  <div class="filter">
+    <h2> Filter Questions Go Here</h2>
+    <h3>Question</h3>
+    <h3>Question</h3>
+    <h3>Question</h3>
+    <h3>Question</h3>
+    <h3>Question</h3>
+    <h3>Question</h3>
+    <h3>Question</h3>
+    <h3>Question</h3>
+    <h3>Question</h3>
+  </div>
   <div class="dotchart">
   <h4> How basic is your movie taste?</h4>
-  <svg id="svg1" height="400" width="400"></svg> 
+  <svg class = "svgclass" id="svg1" height="300" width="300"></svg> 
 
 
   <script>
@@ -23,7 +48,7 @@
     const width = svg.attr("width");
     const height = svg.attr("height");
     // const map = svg.append("g");
-    const margin = {top: 10, right: 10, bottom: 50, left: 50};
+    const margin = {top: 10, right: 10, bottom: 10, left: 10};
     const chartWidth = width - margin.left - margin.right;
     const chartHeight = height - margin.top - margin.bottom;
 
@@ -49,35 +74,35 @@
   const imdb_eighty = imdb_small.slice(61,81);
   const imdb_hundred = imdb_small.slice(81,99);
   
-  let inc_x_t = chartWidth - 10;
+  let inc_x_t = chartWidth;
   imdb_twenty.forEach( d => {
         d.x = inc_x_t;
         d.y = 10;
         inc_x_t= inc_x_t - 8;
       });
 
-  let inc_x_f = chartWidth - 10;
+  let inc_x_f = chartWidth;
   imdb_forty.forEach( d => {
         d.x = inc_x_f;
         d.y = 20;
         inc_x_f = inc_x_f - 8;
       });
       
-  let inc_x_s = chartWidth - 10;
+  let inc_x_s = chartWidth;
   imdb_sixty.forEach( d => {
         d.x = inc_x_s;
         d.y = 30;
         inc_x_s = inc_x_s - 8;
       }); 
   
-  let inc_x_e = chartWidth - 10;
+  let inc_x_e = chartWidth;
   imdb_eighty.forEach( d => {
         d.x = inc_x_e;
         d.y = 40;
         inc_x_e = inc_x_e - 8;
       }); 
   
-  let inc_x_h = chartWidth - 10;
+  let inc_x_h = chartWidth;
   imdb_hundred.forEach( d => {
         d.x = inc_x_h;
         d.y = 50;
@@ -97,6 +122,11 @@
 projectData();
 
 </script>
+<h2> Movie Recommendations Go Here</h2>
+<h3>Recommendation</h3>
+<h3>Recommendation</h3>
+<h3>Recommendation</h3>
+</div>
 </div>
 </body>
 </html>

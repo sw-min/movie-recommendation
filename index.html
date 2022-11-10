@@ -30,16 +30,57 @@
   const imdb_large = await d3.csv("imdb_1000.csv");
   const rotten_tomatoes = await d3.csv("rotten_tomatoes.csv");
 
+  console.log(imdb_small);
+
   
-  imdb_small.forEach( d => {
-        d.x = d3.randomUniform(10, width-10)();
-        d.y = d3.randomUniform(10, height-10)();
+  
+
+  const imdb_twenty = imdb_small.slice(0,20);
+  console.log(imdb_twenty);
+  const imdb_forty = imdb_small.slice(21,40);
+  const imdb_sixty = imdb_small.slice(41,60);
+  const imdb_eighty = imdb_small.slice(61,80);
+  const imdb_hundred = imdb_small.slice(81,100);
+  
+  let inc_x_t = 0;
+  imdb_twenty.forEach( d => {
+        d.x = inc_x_t;
+        d.y = 10;
+        inc_x_t= inc_x_t + 8;
       });
+
+  let inc_x_f = 0;
+  imdb_forty.forEach( d => {
+        d.x = inc_x_f;
+        d.y = 20;
+        inc_x_f = inc_x_f + 8;
+      });
+      
+  let inc_x_s = 0;
+  imdb_sixty.forEach( d => {
+        d.x = inc_x_s;
+        d.y = 30;
+        inc_x_s = inc_x_s + 8;
+      }); 
+  
+  let inc_x_e = 0;
+  imdb_eighty.forEach( d => {
+        d.x = inc_x_e;
+        d.y = 40;
+        inc_x_e = inc_x_e + 8;
+      }); 
+  
+  let inc_x_h = 0;
+  imdb_hundred.forEach( d => {
+        d.x = inc_x_h;
+        d.y = 50;
+        inc_x_h = inc_x_h + 8;
+      }); 
 
   
   let circles = map.selectAll("circle").data(imdb_small)
                             .join("circle")
-                            .attr("r", 8)
+                            .attr("r", 2)
                             .attr("cx", d => d.x) //want to evenly distribute circles on x axis
                             .attr("cy", d => d.y); //and evenly distribute in rows on y axis
                             // .attr("fill", //colors based on filter and y position)

@@ -13,6 +13,7 @@
       border-style: solid;
       border-color: black;
       padding: 5px;
+      
     }
     .content {
       display: flex;
@@ -32,7 +33,6 @@
 
   <div class="content">
   <div class="filter">
-    <svg class = "svgclass" id="svg1" height="300" width="300"></svg> 
     <h3> What is your preferred genre?</h3>
     <div class="genrebuttons" id="genrebuttons"></div>
     <h3> What decade of movies do you prefer?</h3>
@@ -43,6 +43,13 @@
     <div class="directorbuttons" id="directorbuttons"></div>
     <h3> Do you prefer a production company?</h3>
     <div class="companybuttons" id="companybuttons"></div>
+  </div>
+  <div class="dotchart">
+    <h3>How unique is your movie taste?</h3>
+    <svg class = "svgclass" id="svg1" height="300" width="300"></svg> 
+    <h4>__% of movies match those preferences</h4>
+    <h4>score: insert message according on percentage</h4>
+  </div>
 
 
     
@@ -62,11 +69,17 @@
             .append("button")
             .text(i)
             .on("click", function() {
+                
                 filterdata = data.filter(function(d){
                   return d['genre'].includes(i);
                 })
                 // update(filterdata);
                 console.log(filterdata);
+                percent = filterdata.length;
+                console.log(percent);
+                // if( i === 'Clear'){
+                //   filterdata = data;
+                // }
                 })
                 //count rows in filter data
                 //move that many dots to the bottom half of the svg
@@ -84,13 +97,19 @@
             .on("click", function() {
                 decade = i.slice(0,3)
                 console.log(decade)
-                filterdata = data.filter(function(d){
+                filterdata = filterdata.filter(function(d){
                   return d['year'].includes(decade);
                 })
                 // update(filterdata);
                 console.log(filterdata);
+                percent = filterdata.length;
+                console.log(percent);
+                // if( i === 'Clear'){
+                //   filterdata = data;
+                // }
                 })
                 //count rows in filter data
+
                 //move that many dots to the bottom half of the svg
             })
 
@@ -110,7 +129,7 @@
                 console.log(interval)
                 console.log(start)
                 console.log(end)
-                filterdata = data.filter(function(d){
+                filterdata = filterdata.filter(function(d){
                   return d['duration']>=start && d['duration']<=end;
                 })
                 // update(filterdata);
@@ -136,7 +155,7 @@
             .text(i)
             .on("click", function() {
                 console.log(i)
-                filterdata = data.filter(function(d){
+                filterdata = filterdata.filter(function(d){
                   return d['director'].includes(i);
                 })
                 // update(filterdata);
@@ -156,7 +175,7 @@
             .text(i)
             .on("click", function() {
                 console.log(i)
-                filterdata = data.filter(function(d){
+                filterdata = filterdata.filter(function(d){
                   return d['production_company'].includes(i);
                 })
                 // update(filterdata);
@@ -171,10 +190,7 @@
       genrebuttons();
 
       
-      </script>
- 
-
-    <script> 
+     
       
       //HARDCODED DOT CHART CODE BELOW:
 
@@ -195,18 +211,6 @@
 
       console.log(imdb_small);
       // console.log(genre);
-
-    // const buttons = imdb_small.keys(genre).sort();
-    // buttons.forEach( d => {
-    //   // For each genre, add a new button to the genre bar
-    //   d3.select("div#button-bar")
-    //     .append("button")
-    //     .text( d )
-    //     .on("click", function() {
-    //       // When it's clicked, call filtergenres to update the chart
-    //       filtergenre( d );
-    //     })
-    // });
   
 
 
@@ -279,229 +283,219 @@ projectData();
 
   
     </script>
-  <div class="dotchart">
-  <h4> How basic is your movie taste?</h4>
-  
+</div>
 
-
-  <script>
-    
-
-    
-    const runtimes = ["60-90", "90-120", "120-150", "150-180", "180-210", "210-240"]
-    const companies = [
-      "3leven",
-      "AMLF",
-      "Aamir Khan Productions",
-      "Aamir Khan Productions",
-      "Alfred J. Hitchcock Productions",
-      "Alfred J. Hitchcock Productions",
-      "American Zoetrope",
-      "Amuse",
-      "Barunson E&A",
-      "Bavaria Film",
-      "Bold Films",
-      "Brandywine Productions",
-      "Bryna Productions",
-      "Carolco Pictures",
-      "Castle Rock Entertainment",
-      "Castle Rock Entertainment",
-      "Cecchi Gori Pictures",
-      "Charles Chaplin Productions",
-      "Charles Chaplin Productions",
-      "Charles Chaplin Productions",
-      "Charles Chaplin Productions",
-      "Columbia Pictures",
-      "Columbia Pictures",
-      "Cristaldifilm",
-      "DENTSU Music And Entertainment",
-      "DreamWorks",
-      "DreamWorks",
-      "Edward Small Productions",
-      "Egg Films",
-      "Fantasy Films",
-      "FortyFour Studios",
-      "Fox 2000 Pictures",
-      "Fox STAR Studios",
-      "Gaumont",
-      "Horizon Pictures (II)",
-      "Liberty Films (II)",
-      "Lucasfilm",
-      "Lucasfilm",
-      "Lucasfilm",
-      "Marvel Studios",
-      "Marvel Studios",
-      "Melampo Cinematografica",
-      "Metro-Goldwyn-Mayer (MGM)",
-      "Metro-Goldwyn-Mayer (MGM)",
-      "Metro-Goldwyn-Mayer (MGM)",
-      "Miramax",
-      "Mooz Films",
-      "Nero-Film AG",
-      "New Line Cinema",
-      "New Line Cinema",
-      "New Line Cinema",
-      "New Line Cinema",
-      "Newmarket Capital Group",
-      "O2 Filmes",
-      "Orion-Nova Productions",
-      "Paramount Pictures",
-      "Paramount Pictures",
-      "Paramount Pictures",
-      "Paramount Pictures",
-      "Paramount Pictures",
-      "Paramount Pictures",
-      "Paramount Pictures",
-      "PolyGram Filmed Entertainment",
-      "Produzioni De Sica (PDS)",
-      "Produzioni Europee Associate (PEA)",
-      "Produzioni Europee Associate (PEA)",
-      "Quad Productions",
-      "R.P. Productions",
-      "RKO Radio Pictures",
-      "Rafran Cinematografica",
-      "Shamley Productions",
-      "Shinchosha Company",
-      "Sony Pictures Entertainment (SPE)",
-      "Strong Heart/Demme Production",
-      "The Ladd Company",
-      "The Mirisch Corporation",
-      "The Weinstein Company",
-      "Toho Company",
-      "Toho Company",
-      "Tokuma Shoten",
-      "Touchstone Pictures",
-      "Universal Pictures",
-      "Universal Pictures",
-      "Universal Pictures",
-      "Universum Film (UFA)",
-      "Vinod Chopra Productions",
-      "Walt Disney Pictures",
-      "Walt Disney Pictures",
-      "Warner Bros.",
-      "Warner Bros.",
-      "Warner Bros.",
-      "Warner Bros.",
-      "Warner Bros.",
-      "Warner Bros.",
-      "Warner Bros.",
-      "Warner Bros.",
-      "Warner Bros.",
-      "Warner Bros.",
-      "Wiedemann & Berg Filmproduktion",
-      "Zanuck/Brown Productions"
-    ]
-    const directors = [
-        "Aamir Khan, Amole Gupte",
-        "Akira Kurosawa",
-        "Akira Kurosawa",
-        "Alfred Hitchcock",
-        "Alfred Hitchcock",
-        "Alfred Hitchcock",
-        "Alfred Hitchcock",
-        "Alper Caglar",
-        "Andrew Stanton",
-        "Anthony Russo, Joe Russo",
-        "Anthony Russo, Joe Russo",
-        "Billy Wilder",
-        "Billy Wilder",
-        "Billy Wilder",
-        "Billy Wilder",
-        "Bob Persichetti, Peter Ramsey",
-        "Bong Joon Ho",
-        "Brian De Palma",
-        "Bryan Singer",
-        "Chan-wook Park",
-        "Charles Chaplin",
-        "Charles Chaplin",
-        "Charles Chaplin",
-        "Charles Chaplin",
-        "Christopher Nolan",
-        "Christopher Nolan",
-        "Christopher Nolan",
-        "Christopher Nolan",
-        "Christopher Nolan",
-        "Christopher Nolan",
-        "Damien Chazelle",
-        "David Fincher",
-        "David Fincher",
-        "David Lean",
-        "Fernando Meirelles, Kátia Lund",
-        "Florian Henckel von Donnersmarck",
-        "Francis Ford Coppola",
-        "Francis Ford Coppola",
-        "Francis Ford Coppola",
-        "Frank Capra",
-        "Frank Darabont",
-        "Frank Darabont",
-        "Fritz Lang",
-        "Fritz Lang",
-        "George Lucas",
-        "George Roy Hill",
-        "Giuseppe Tornatore",
-        "Hayao Miyazaki",
-        "Hayao Miyazaki",
-        "Irvin Kershner",
-        "Isao Takahata",
-        "James Cameron",
-        "Jonathan Demme",
-        "Lana Wachowski, Lilly Wachowski",
-        "Lee Unkrich, Adrian Molina",
-        "Luc Besson",
-        "Makoto Shinkai",
-        "Martin Scorsese",
-        "Martin Scorsese",
-        "Martin Scorsese",
-        "Michael Curtiz",
-        "Milos Forman",
-        "Milos Forman",
-        "Mukesh Chhabra",
-        "Nadine Labaki",
-        "Nitesh Tiwari",
-        "Olivier Nakache, Éric Toledano",
-        "Orson Welles",
-        "Peter Jackson",
-        "Peter Jackson",
-        "Peter Jackson",
-        "Quentin Tarantino",
-        "Quentin Tarantino",
-        "Rajkumar Hirani",
-        "Richard Marquand",
-        "Ridley Scott",
-        "Ridley Scott",
-        "Robert Zemeckis",
-        "Robert Zemeckis",
-        "Roberto Benigni",
-        "Roger Allers, Rob Minkoff",
-        "Roman Polanski",
-        "Sergio Leone",
-        "Sergio Leone",
-        "Sergio Leone",
-        "Sergio Leone",
-        "Sidney Lumet",
-        "Stanley Donen, Gene Kelly",
-        "Stanley Kubrick",
-        "Stanley Kubrick",
-        "Stanley Kubrick",
-        "Stanley Kubrick",
-        "Stanley Kubrick",
-        "Steven Spielberg",
-        "Steven Spielberg",
-        "Steven Spielberg",
-        "Todd Phillips",
-        "Tony Kaye",
-        "Vittorio De Sica",
-        "Wolfgang Petersen"
-    ]
-
-
-  
-</script>
 <h2> Movie Recommendations Go Here</h2>
 <h3>Recommendation</h3>
 <h3>Recommendation</h3>
 <h3>Recommendation</h3>
-</div>
-</div>
+
+
 </body>
 </html>
+
+<!-- const runtimes = ["60-90", "90-120", "120-150", "150-180", "180-210", "210-240"]
+const companies = [
+  "3leven",
+  "AMLF",
+  "Aamir Khan Productions",
+  "Aamir Khan Productions",
+  "Alfred J. Hitchcock Productions",
+  "Alfred J. Hitchcock Productions",
+  "American Zoetrope",
+  "Amuse",
+  "Barunson E&A",
+  "Bavaria Film",
+  "Bold Films",
+  "Brandywine Productions",
+  "Bryna Productions",
+  "Carolco Pictures",
+  "Castle Rock Entertainment",
+  "Castle Rock Entertainment",
+  "Cecchi Gori Pictures",
+  "Charles Chaplin Productions",
+  "Charles Chaplin Productions",
+  "Charles Chaplin Productions",
+  "Charles Chaplin Productions",
+  "Columbia Pictures",
+  "Columbia Pictures",
+  "Cristaldifilm",
+  "DENTSU Music And Entertainment",
+  "DreamWorks",
+  "DreamWorks",
+  "Edward Small Productions",
+  "Egg Films",
+  "Fantasy Films",
+  "FortyFour Studios",
+  "Fox 2000 Pictures",
+  "Fox STAR Studios",
+  "Gaumont",
+  "Horizon Pictures (II)",
+  "Liberty Films (II)",
+  "Lucasfilm",
+  "Lucasfilm",
+  "Lucasfilm",
+  "Marvel Studios",
+  "Marvel Studios",
+  "Melampo Cinematografica",
+  "Metro-Goldwyn-Mayer (MGM)",
+  "Metro-Goldwyn-Mayer (MGM)",
+  "Metro-Goldwyn-Mayer (MGM)",
+  "Miramax",
+  "Mooz Films",
+  "Nero-Film AG",
+  "New Line Cinema",
+  "New Line Cinema",
+  "New Line Cinema",
+  "New Line Cinema",
+  "Newmarket Capital Group",
+  "O2 Filmes",
+  "Orion-Nova Productions",
+  "Paramount Pictures",
+  "Paramount Pictures",
+  "Paramount Pictures",
+  "Paramount Pictures",
+  "Paramount Pictures",
+  "Paramount Pictures",
+  "Paramount Pictures",
+  "PolyGram Filmed Entertainment",
+  "Produzioni De Sica (PDS)",
+  "Produzioni Europee Associate (PEA)",
+  "Produzioni Europee Associate (PEA)",
+  "Quad Productions",
+  "R.P. Productions",
+  "RKO Radio Pictures",
+  "Rafran Cinematografica",
+  "Shamley Productions",
+  "Shinchosha Company",
+  "Sony Pictures Entertainment (SPE)",
+  "Strong Heart/Demme Production",
+  "The Ladd Company",
+  "The Mirisch Corporation",
+  "The Weinstein Company",
+  "Toho Company",
+  "Toho Company",
+  "Tokuma Shoten",
+  "Touchstone Pictures",
+  "Universal Pictures",
+  "Universal Pictures",
+  "Universal Pictures",
+  "Universum Film (UFA)",
+  "Vinod Chopra Productions",
+  "Walt Disney Pictures",
+  "Walt Disney Pictures",
+  "Warner Bros.",
+  "Warner Bros.",
+  "Warner Bros.",
+  "Warner Bros.",
+  "Warner Bros.",
+  "Warner Bros.",
+  "Warner Bros.",
+  "Warner Bros.",
+  "Warner Bros.",
+  "Warner Bros.",
+  "Wiedemann & Berg Filmproduktion",
+  "Zanuck/Brown Productions"
+]
+const directors = [
+    "Aamir Khan, Amole Gupte",
+    "Akira Kurosawa",
+    "Akira Kurosawa",
+    "Alfred Hitchcock",
+    "Alfred Hitchcock",
+    "Alfred Hitchcock",
+    "Alfred Hitchcock",
+    "Alper Caglar",
+    "Andrew Stanton",
+    "Anthony Russo, Joe Russo",
+    "Anthony Russo, Joe Russo",
+    "Billy Wilder",
+    "Billy Wilder",
+    "Billy Wilder",
+    "Billy Wilder",
+    "Bob Persichetti, Peter Ramsey",
+    "Bong Joon Ho",
+    "Brian De Palma",
+    "Bryan Singer",
+    "Chan-wook Park",
+    "Charles Chaplin",
+    "Charles Chaplin",
+    "Charles Chaplin",
+    "Charles Chaplin",
+    "Christopher Nolan",
+    "Christopher Nolan",
+    "Christopher Nolan",
+    "Christopher Nolan",
+    "Christopher Nolan",
+    "Christopher Nolan",
+    "Damien Chazelle",
+    "David Fincher",
+    "David Fincher",
+    "David Lean",
+    "Fernando Meirelles, Kátia Lund",
+    "Florian Henckel von Donnersmarck",
+    "Francis Ford Coppola",
+    "Francis Ford Coppola",
+    "Francis Ford Coppola",
+    "Frank Capra",
+    "Frank Darabont",
+    "Frank Darabont",
+    "Fritz Lang",
+    "Fritz Lang",
+    "George Lucas",
+    "George Roy Hill",
+    "Giuseppe Tornatore",
+    "Hayao Miyazaki",
+    "Hayao Miyazaki",
+    "Irvin Kershner",
+    "Isao Takahata",
+    "James Cameron",
+    "Jonathan Demme",
+    "Lana Wachowski, Lilly Wachowski",
+    "Lee Unkrich, Adrian Molina",
+    "Luc Besson",
+    "Makoto Shinkai",
+    "Martin Scorsese",
+    "Martin Scorsese",
+    "Martin Scorsese",
+    "Michael Curtiz",
+    "Milos Forman",
+    "Milos Forman",
+    "Mukesh Chhabra",
+    "Nadine Labaki",
+    "Nitesh Tiwari",
+    "Olivier Nakache, Éric Toledano",
+    "Orson Welles",
+    "Peter Jackson",
+    "Peter Jackson",
+    "Peter Jackson",
+    "Quentin Tarantino",
+    "Quentin Tarantino",
+    "Rajkumar Hirani",
+    "Richard Marquand",
+    "Ridley Scott",
+    "Ridley Scott",
+    "Robert Zemeckis",
+    "Robert Zemeckis",
+    "Roberto Benigni",
+    "Roger Allers, Rob Minkoff",
+    "Roman Polanski",
+    "Sergio Leone",
+    "Sergio Leone",
+    "Sergio Leone",
+    "Sergio Leone",
+    "Sidney Lumet",
+    "Stanley Donen, Gene Kelly",
+    "Stanley Kubrick",
+    "Stanley Kubrick",
+    "Stanley Kubrick",
+    "Stanley Kubrick",
+    "Stanley Kubrick",
+    "Steven Spielberg",
+    "Steven Spielberg",
+    "Steven Spielberg",
+    "Todd Phillips",
+    "Tony Kaye",
+    "Vittorio De Sica",
+    "Wolfgang Petersen"
+] -->

@@ -32,14 +32,62 @@
 
   <div class="content">
   <div class="filter">
+    <svg class = "svgclass" id="svg1" height="300" width="300"></svg> 
     <h2> Filter Questions Go Here</h2>
-    <h3>What's your preferred genre?</h3>
+    <div class="button"></div>
+
+    <p id="q1">What's your preferred genre?
+      <script>
+
+      const genrebuttons = async function () {
+        console.log('running genrebuttons')
+      const imdb_small = await d3.csv("imdb_100.csv");
+      const data = imdb_small
+
+      const genres = ["Drama", "Crime", "Action", "Biography", "History", "Adventure", "Sci-Fi", "Fantasy", "Thriller", "Comedy", "War", "Romance", "Horror", "Family", "Western", "Film-Noir", "Music", "Musical", "Mystery", "Animation"]
+      
+        genres.forEach(function(i) {
+          console.log('in genre for each loop')
+          d3.select("div#button")
+            .append("button")
+            .text(i)
+            .on("click", function() {
+                d3.selectAll("#circle").each(function filtergenre(i){
+                filterdata = data.filter(function(d){
+                  return genre === i;
+                })
+                update(filterdata);
+                console.log(filterdata);
+                console.log('hello');
+                })
+                //count rows in filter data
+                //move that many dots to the bottom half of the svg
+            })
+        })
+
+        //repeat for next filter and feed in already-filtered filterdata array to layer the filters
+        //count new number of dots each time and only have that amount display on the bottom
+
+
+      
+  
+      }
+      genrebuttons();
+
+      
+      </script>
+    </p>
+
     <script> 
-      // let genre = '';
-      let decade = '';
-      let runtime = '';
-      let director = '';
-      let company = '';
+      
+      //HARDCODED DOT CHART CODE BELOW:
+
+      const svg = d3.select("#svg1");
+      const width = svg.attr("width");
+      const height = svg.attr("height");
+      const margin = {top: 10, right: 10, bottom: 10, left: 10};
+      const chartWidth = width - margin.left - margin.right;
+      const chartHeight = height - margin.top - margin.bottom;
 
       const projectData = async function () {
        console.log('in async')
@@ -63,26 +111,13 @@
     //       filtergenre( d );
     //     })
     // });
-
-
-
-      function filtergenre(genrename) {
-        const genres = d3.map(imdb_small, d['genre'] == genrename)
-        console.log(genres)
-      }
-
-      // function filtergenre(genrename) {
-      //   const genres = d3.map(imdb_small, d['genre'] == genrename)
-      //   console.log(genres)
-
-      // }
   
 
 
 
 
   const imdb_twenty = imdb_small.slice(0,20);
-  console.log(imdb_twenty);
+  // console.log(imdb_twenty);
   const imdb_forty = imdb_small.slice(21,41);
   const imdb_sixty = imdb_small.slice(41,61);
   const imdb_eighty = imdb_small.slice(61,81);
@@ -149,7 +184,7 @@ projectData();
   
     </script>
     <div class="btn-group">
-      <button type="button" class="filter_btn" onclick="filtergenre('Action')">Action</button>
+      <!-- <button type="button" class="filter_btn" onclick="filtergenre('Action')">Action</button>
       <button type="button" class="filter_btn" onclick="genre= 'Adventure'">Adventure</button>
       <button type="button" class="filter_btn" onclick="genre= 'Animation'">Animation</button>
       <button type="button" class="filter_btn" onclick="genre= 'Biography'">Biography</button>
@@ -167,10 +202,10 @@ projectData();
       <button type="button" class="filter_btn" onclick="genre='Sci-Fi'">Sci-Fi</button>
       <button type="button" class="filter_btn" onclick="genre='Thriller'">Thriller</button>
       <button type="button" class="filter_btn" onclick="genre='War'">War</button>
-      <button type="button" class="filter_btn" onclick="genre='Western'">Western</button>
+      <button type="button" class="filter_btn" onclick="genre='Western'">Western</button> -->
     </div>
     <h3>What's your preferred era?</h3>
-      <button type="button" class="filter_btn" onclick="decade='1920'">1920s</button>
+      <!-- <button type="button" class="filter_btn" onclick="decade='1920'">1920s</button>
       <button type="button" class="filter_btn" onclick="decade='1930'">1930s</button>
       <button type="button" class="filter_btn" onclick="decade='1940'">1940s</button>
       <button type="button" class="filter_btn" onclick="decade='1950'">1950s</button>
@@ -180,45 +215,38 @@ projectData();
       <button type="button" class="filter_btn" onclick="decade='1990'">1990s</button>
       <button type="button" class="filter_btn" onclick="decade='2000'">2000s</button>
       <button type="button" class="filter_btn" onclick="decade='2010'">2010s</button>
-      <button type="button" class="filter_btn" onclick="decade='2020'">2020s</button>
+      <button type="button" class="filter_btn" onclick="decade='2020'">2020s</button> -->
     <h3>What's your preferred length?</h3>
-      <button type="button" class="filter_btn" onclick="">60-90 min</button>
+      <!-- <button type="button" class="filter_btn" onclick="">60-90 min</button>
       <button type="button" class="filter_btn" onclick="">90-120 min</button>
       <button type="button" class="filter_btn" onclick="">120-150 min</button>
       <button type="button" class="filter_btn" onclick="">150-180 min</button>
       <button type="button" class="filter_btn" onclick="">180-210 min</button>
-      <button type="button" class="filter_btn" onclick="">210-240 min</button>
+      <button type="button" class="filter_btn" onclick="">210-240 min</button> -->
     <h3>Who's you preferred director?</h3>
-      <button type="button" class="filter_btn" onclick="">Steven Spielberg</button>
+      <!-- <button type="button" class="filter_btn" onclick="">Steven Spielberg</button>
       <button type="button" class="filter_btn" onclick="">Quentin Tarantino</button>
       <button type="button" class="filter_btn" onclick="">Christopher Nolan</button>
       <button type="button" class="filter_btn" onclick="">Denis Villeneuve</button>
       <button type="button" class="filter_btn" onclick="">Alfred Hitchcock</button>
-      <button type="button" class="filter_btn" onclick="">David Fincher</button>
+      <button type="button" class="filter_btn" onclick="">David Fincher</button> -->
     <h3>Which's your preferred production company?</h3>
-      <button type="button" class="filter_btn" onclick="">Charles Chaplin Productions</button>
+      <!-- <button type="button" class="filter_btn" onclick="">Charles Chaplin Productions</button>
       <button type="button" class="filter_btn" onclick="">New Line Cinema</button>
       <button type="button" class="filter_btn" onclick="">Paramount Pictures</button>
       <button type="button" class="filter_btn" onclick="">Warner Bros.</button>
       <button type="button" class="filter_btn" onclick="">Universal Pictures</button>
       <button type="button" class="filter_btn" onclick="">Marvel Studios</button><br><br>
-      <button type="button" class="filter_btn" onclick="">Surprise Me!</button>
+      <button type="button" class="filter_btn" onclick="">Surprise Me!</button> -->
   </div>
   <div class="dotchart">
   <h4> How basic is your movie taste?</h4>
-  <svg class = "svgclass" id="svg1" height="300" width="300"></svg> 
+  
 
 
   <script>
-    const svg = d3.select("#svg1");
-    const width = svg.attr("width");
-    const height = svg.attr("height");
-    // const map = svg.append("g");
-    const margin = {top: 10, right: 10, bottom: 10, left: 10};
-    const chartWidth = width - margin.left - margin.right;
-    const chartHeight = height - margin.top - margin.bottom;
+    
 
-    const genres = ["Drama", "Crime", "Action", "Biography", "History", "Adventure", "Sci-Fi", "Fantasy", "Thriller", "Comedy", "War", "Romance", "Horror", "Family", "Western", "Film-Noir", "Music", "Musical", "Mystery", "Animation"]
     // earliest: 1921, latest: 2020
     const eras = ["1920s", "1930s", "1940s", "1950s", "1960s", "1970s", "1980s", "1990s", "2000s", "2010s", "2020s"]
     // shortest: 68, longest: 229

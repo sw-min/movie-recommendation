@@ -33,12 +33,13 @@
   <div class="content">
   <div class="filter">
     <svg class = "svgclass" id="svg1" height="300" width="300"></svg> 
-    <h2> Filter Questions Go Here</h2>
+    <h3> What is your preferred genre?</h3>
     <div class="genrebuttons" id="genrebuttons"></div>
+    <h3> What decade of movies do you prefer?</h3>
     <div class="erabuttons" id="button"></div>
 
 
-    <p id="q1">What's your preferred genre?
+    
       <script>
 
       const genrebuttons = async function () {
@@ -46,6 +47,7 @@
       const imdb_small = await d3.csv("imdb_100.csv");
       const data = imdb_small
 
+      //genre filter
       const genres = ["Drama", "Crime", "Action", "Biography", "History", "Adventure", "Sci-Fi", "Fantasy", "Thriller", "Comedy", "War", "Romance", "Horror", "Family", "Western", "Film-Noir", "Music", "Musical", "Mystery", "Animation"]
       
         genres.forEach(function(i) {
@@ -55,7 +57,7 @@
             .text(i)
             .on("click", function() {
                 filterdata = data.filter(function(d){
-                  return d['genre'] === i;
+                  return d['genre'].includes(i);
                 })
                 // update(filterdata);
                 console.log(filterdata);
@@ -63,6 +65,9 @@
                 //count rows in filter data
                 //move that many dots to the bottom half of the svg
             })
+
+
+      //era filter
         
 
         //repeat for next filter and feed in already-filtered filterdata array to layer the filters
@@ -98,7 +103,7 @@
 
       
       </script>
-    </p>
+ 
 
     <script> 
       

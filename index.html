@@ -6,7 +6,8 @@
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <style>
     .dotchart {
-      margin-left: 500px;
+      margin-left: 50px;
+      margin-right: 50px;
     }
     .svgclass {
       border-style: solid;
@@ -16,6 +17,10 @@
     .content {
       display: flex;
       flex-direction: row;
+    }
+    .filter {
+      padding-right: 50px;
+
     }
   </style>
   <title>INFO 3300-Project 2</title>
@@ -29,39 +34,153 @@
   <div class="filter">
     <h2> Filter Questions Go Here</h2>
     <h3>What's your preferred genre?</h3>
+    <script> 
+      // let genre = '';
+      let decade = '';
+      let runtime = '';
+      let director = '';
+      let company = '';
+
+      const projectData = async function () {
+       console.log('in async')
+
+      //Movie names on the top 100 are 'original_title', top 1000 are 'Series_Title', and RT are 'Name'
+      const imdb_small = await d3.csv("imdb_100.csv");
+      const imdb_large = await d3.csv("imdb_1000.csv");
+      const rotten_tomatoes = await d3.csv("rotten_tomatoes.csv");
+
+      console.log(imdb_small);
+      // console.log(genre);
+
+    // const buttons = imdb_small.keys(genre).sort();
+    // buttons.forEach( d => {
+    //   // For each genre, add a new button to the genre bar
+    //   d3.select("div#button-bar")
+    //     .append("button")
+    //     .text( d )
+    //     .on("click", function() {
+    //       // When it's clicked, call filtergenres to update the chart
+    //       filtergenre( d );
+    //     })
+    // });
+
+
+
+      function filtergenre(genrename) {
+        const genres = d3.map(imdb_small, d['genre'] == genrename)
+        console.log(genres)
+      }
+
+      // function filtergenre(genrename) {
+      //   const genres = d3.map(imdb_small, d['genre'] == genrename)
+      //   console.log(genres)
+
+      // }
+  
+
+
+
+
+  const imdb_twenty = imdb_small.slice(0,20);
+  console.log(imdb_twenty);
+  const imdb_forty = imdb_small.slice(21,41);
+  const imdb_sixty = imdb_small.slice(41,61);
+  const imdb_eighty = imdb_small.slice(61,81);
+  const imdb_hundred = imdb_small.slice(81,99);
+  
+  let inc_x_t = chartWidth;
+  imdb_twenty.forEach( d => {
+        d.x = inc_x_t;
+        d.y = 10;
+        inc_x_t= inc_x_t - 8;
+      });
+
+  let inc_x_f = chartWidth;
+  imdb_forty.forEach( d => {
+        d.x = inc_x_f;
+        d.y = 20;
+        inc_x_f = inc_x_f - 8;
+      });
+      
+  let inc_x_s = chartWidth;
+  imdb_sixty.forEach( d => {
+        d.x = inc_x_s;
+        d.y = 30;
+        inc_x_s = inc_x_s - 8;
+      }); 
+  
+  let inc_x_e = chartWidth;
+  imdb_eighty.forEach( d => {
+        d.x = inc_x_e;
+        d.y = 40;
+        inc_x_e = inc_x_e - 8;
+      }); 
+  
+  let inc_x_h = chartWidth;
+  imdb_hundred.forEach( d => {
+        d.x = inc_x_h;
+        d.y = 50;
+        inc_x_h = inc_x_h - 8;
+      }); 
+
+  
+  let circles = svg.selectAll("circle").data(imdb_small)
+                            .join("circle")
+                            .attr("r", 2)
+                            .attr("cx", d => d.x) //want to evenly distribute circles on x axis
+                            .attr("cy", d => d.y); //and evenly distribute in rows on y axis
+                            // .attr("fill", //colors based on filter and y position)
+
+
+
+   //filtering implementation
+   //have variables for each genre
+   //have a calculator that calculates the percentage of movies that fit your preferences
+   //apply percentage to visualization
+   
+   
+
+    }
+
+projectData();
+
+   
+
+  
+    </script>
     <div class="btn-group">
-      <button type="button" class="filter_btn" onclick="">Action</button>
-      <button type="button" class="filter_btn" onclick="">Adventure</button>
-      <button type="button" class="filter_btn" onclick="">Animation</button>
-      <button type="button" class="filter_btn" onclick="">Biography</button>
-      <button type="button" class="filter_btn" onclick="">Comedy</button>
-      <button type="button" class="filter_btn" onclick="">Crime</button>
-      <button type="button" class="filter_btn" onclick="">Drama</button>
-      <button type="button" class="filter_btn" onclick="">Family</button>
-      <button type="button" class="filter_btn" onclick="">Fantasy</button>
-      <button type="button" class="filter_btn" onclick="">Film-Noir</button>
-      <button type="button" class="filter_btn" onclick="">History</button>
-      <button type="button" class="filter_btn" onclick="">Horror</button>
-      <button type="button" class="filter_btn" onclick="">Musical</button>
-      <button type="button" class="filter_btn" onclick="">Mystery</button>
-      <button type="button" class="filter_btn" onclick="">Romance</button>
-      <button type="button" class="filter_btn" onclick="">Sci-Fi</button>
-      <button type="button" class="filter_btn" onclick="">Thriller</button>
-      <button type="button" class="filter_btn" onclick="">War</button>
-      <button type="button" class="filter_btn" onclick="">Western</button>
+      <button type="button" class="filter_btn" onclick="filtergenre('Action')">Action</button>
+      <button type="button" class="filter_btn" onclick="genre= 'Adventure'">Adventure</button>
+      <button type="button" class="filter_btn" onclick="genre= 'Animation'">Animation</button>
+      <button type="button" class="filter_btn" onclick="genre= 'Biography'">Biography</button>
+      <button type="button" class="filter_btn" onclick="genre= 'Comedy'">Comedy</button>
+      <button type="button" class="filter_btn" onclick="genre= 'Crime'">Crime</button>
+      <button type="button" class="filter_btn" onclick="genre= 'Drama'">Drama</button>
+      <button type="button" class="filter_btn" onclick="genre= 'Family'">Family</button>
+      <button type="button" class="filter_btn" onclick="genre= 'Fantasy'">Fantasy</button>
+      <button type="button" class="filter_btn" onclick="genre= 'Film-Noir'">Film-Noir</button>
+      <button type="button" class="filter_btn" onclick="genre='History'">History</button>
+      <button type="button" class="filter_btn" onclick="genre='Horror'">Horror</button>
+      <button type="button" class="filter_btn" onclick="genre='Musical'">Musical</button>
+      <button type="button" class="filter_btn" onclick="genre='Mystery'">Mystery</button>
+      <button type="button" class="filter_btn" onclick="genre='Romance'">Romance</button>
+      <button type="button" class="filter_btn" onclick="genre='Sci-Fi'">Sci-Fi</button>
+      <button type="button" class="filter_btn" onclick="genre='Thriller'">Thriller</button>
+      <button type="button" class="filter_btn" onclick="genre='War'">War</button>
+      <button type="button" class="filter_btn" onclick="genre='Western'">Western</button>
     </div>
     <h3>What's your preferred era?</h3>
-      <button type="button" class="filter_btn" onclick="">1920s</button>
-      <button type="button" class="filter_btn" onclick="">1930s</button>
-      <button type="button" class="filter_btn" onclick="">1940s</button>
-      <button type="button" class="filter_btn" onclick="">1950s</button>
-      <button type="button" class="filter_btn" onclick="">1960s</button>
-      <button type="button" class="filter_btn" onclick="">1970s</button>
-      <button type="button" class="filter_btn" onclick="">1980s</button>
-      <button type="button" class="filter_btn" onclick="">1990s</button>
-      <button type="button" class="filter_btn" onclick="">2000s</button>
-      <button type="button" class="filter_btn" onclick="">2010s</button>
-      <button type="button" class="filter_btn" onclick="">2020s</button>
+      <button type="button" class="filter_btn" onclick="decade='1920'">1920s</button>
+      <button type="button" class="filter_btn" onclick="decade='1930'">1930s</button>
+      <button type="button" class="filter_btn" onclick="decade='1940'">1940s</button>
+      <button type="button" class="filter_btn" onclick="decade='1950'">1950s</button>
+      <button type="button" class="filter_btn" onclick="decade='1960'">1960s</button>
+      <button type="button" class="filter_btn" onclick="decade='1970'">1970s</button>
+      <button type="button" class="filter_btn" onclick="decade='1980'">1980s</button>
+      <button type="button" class="filter_btn" onclick="decade='1990'">1990s</button>
+      <button type="button" class="filter_btn" onclick="decade='2000'">2000s</button>
+      <button type="button" class="filter_btn" onclick="decade='2010'">2010s</button>
+      <button type="button" class="filter_btn" onclick="decade='2020'">2020s</button>
     <h3>What's your preferred length?</h3>
       <button type="button" class="filter_btn" onclick="">60-90 min</button>
       <button type="button" class="filter_btn" onclick="">90-120 min</button>
@@ -310,73 +429,7 @@
     ]
 
 
-  const projectData = async function () {
-    console.log('in async')
-
-  //Movie names on the top 100 are 'original_title', top 1000 are 'Series_Title', and RT are 'Name'
-  const imdb_small = await d3.csv("imdb_100.csv");
-  const imdb_large = await d3.csv("imdb_1000.csv");
-  const rotten_tomatoes = await d3.csv("rotten_tomatoes.csv");
-
-  console.log(imdb_small);
-
   
-  
-
-  const imdb_twenty = imdb_small.slice(0,20);
-  console.log(imdb_twenty);
-  const imdb_forty = imdb_small.slice(21,41);
-  const imdb_sixty = imdb_small.slice(41,61);
-  const imdb_eighty = imdb_small.slice(61,81);
-  const imdb_hundred = imdb_small.slice(81,99);
-  
-  let inc_x_t = chartWidth;
-  imdb_twenty.forEach( d => {
-        d.x = inc_x_t;
-        d.y = 10;
-        inc_x_t= inc_x_t - 8;
-      });
-
-  let inc_x_f = chartWidth;
-  imdb_forty.forEach( d => {
-        d.x = inc_x_f;
-        d.y = 20;
-        inc_x_f = inc_x_f - 8;
-      });
-      
-  let inc_x_s = chartWidth;
-  imdb_sixty.forEach( d => {
-        d.x = inc_x_s;
-        d.y = 30;
-        inc_x_s = inc_x_s - 8;
-      }); 
-  
-  let inc_x_e = chartWidth;
-  imdb_eighty.forEach( d => {
-        d.x = inc_x_e;
-        d.y = 40;
-        inc_x_e = inc_x_e - 8;
-      }); 
-  
-  let inc_x_h = chartWidth;
-  imdb_hundred.forEach( d => {
-        d.x = inc_x_h;
-        d.y = 50;
-        inc_x_h = inc_x_h - 8;
-      }); 
-
-  
-  let circles = svg.selectAll("circle").data(imdb_small)
-                            .join("circle")
-                            .attr("r", 2)
-                            .attr("cx", d => d.x) //want to evenly distribute circles on x axis
-                            .attr("cy", d => d.y); //and evenly distribute in rows on y axis
-                            // .attr("fill", //colors based on filter and y position)
-
-  }
-
-projectData();
-
 </script>
 <h2> Movie Recommendations Go Here</h2>
 <h3>Recommendation</h3>

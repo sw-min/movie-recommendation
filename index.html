@@ -59,6 +59,7 @@
         console.log('running genrebuttons')
       const imdb_small = await d3.csv("imdb_100.csv");
       const data = imdb_small
+      // var percent = '';
 
       //genre filter
       const genres = ["Drama", "Crime", "Action", "Biography", "History", "Adventure", "Sci-Fi", "Fantasy", "Thriller", "Comedy", "War", "Romance", "Horror", "Family", "Western", "Film-Noir", "Music", "Musical", "Mystery", "Animation"]
@@ -189,8 +190,7 @@
             })
       
   
-      }
-      genrebuttons();
+     
 
       
      
@@ -204,11 +204,11 @@
       const chartWidth = width - margin.left - margin.right;
       const chartHeight = height - margin.top - margin.bottom;
 
-      const projectData = async function () {
+      // const projectData = async function () {
        console.log('in async')
 
       //Movie names on the top 100 are 'original_title', top 1000 are 'Series_Title', and RT are 'Name'
-      const imdb_small = await d3.csv("imdb_100.csv");
+      // const imdb_small = await d3.csv("imdb_100.csv");
       const imdb_large = await d3.csv("imdb_1000.csv");
       const rotten_tomatoes = await d3.csv("rotten_tomatoes.csv");
 
@@ -277,10 +277,12 @@
    //apply percentage to visualization
    
    
+  }
+  genrebuttons();
 
-    }
+//     }
 
-projectData();
+// projectData();
 
    
 

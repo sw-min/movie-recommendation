@@ -58,6 +58,7 @@
         console.log('running genrebuttons')
       const imdb_small = await d3.csv("imdb_100.csv");
       const data = imdb_small
+      // var percent = '';
 
       //genre filter
       const genres = ["Drama", "Crime", "Action", "Biography", "History", "Adventure", "Sci-Fi", "Fantasy", "Thriller", "Comedy", "War", "Romance", "Horror", "Family", "Western", "Film-Noir", "Music", "Musical", "Mystery", "Animation"]
@@ -74,11 +75,9 @@
                 })
                 // update(filterdata);
                 console.log(filterdata);
+                //count rows in filter data
                 percent = filterdata.length;
                 console.log(percent);
-                // if( i === 'Clear'){
-                //   filterdata = data;
-                // }
                 })
                 //count rows in filter data
                 //move that many dots to the bottom half of the svg
@@ -101,13 +100,11 @@
                 })
                 // update(filterdata);
                 console.log(filterdata);
+                //count rows in filter data
                 percent = filterdata.length;
                 console.log(percent);
-                // if( i === 'Clear'){
-                //   filterdata = data;
-                // }
+                
                 })
-                //count rows in filter data
 
                 //move that many dots to the bottom half of the svg
             })
@@ -134,8 +131,10 @@
                 // update(filterdata);
                 //** 90-120 range not working??
                 console.log(filterdata);
-                })
                 //count rows in filter data
+                percent = filterdata.length;
+                console.log(percent);
+                })
                 //move that many dots to the bottom half of the svg
             })
 
@@ -158,9 +157,11 @@
                   return d['director'].includes(i);
                 })
                 // update(filterdata);
-                console.log(filterdata);
-                })
                 //count rows in filter data
+                console.log(filterdata);
+                percent = filterdata.length;
+                console.log(percent);
+                })
                 //move that many dots to the bottom half of the svg
             })
 
@@ -178,15 +179,17 @@
                   return d['production_company'].includes(i);
                 })
                 // update(filterdata);
-                console.log(filterdata);
-                })
                 //count rows in filter data
+                console.log(filterdata);
+                percent = filterdata.length;
+                console.log(percent);
+                })
+                
                 //move that many dots to the bottom half of the svg
             })
       
   
-      }
-      genrebuttons();
+     
 
       
      
@@ -202,11 +205,11 @@
       const map = svg.append("g")
                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-      const projectData = async function () {
+      // const projectData = async function () {
        console.log('in async')
 
       //Movie names on the top 100 are 'original_title', top 1000 are 'Series_Title', and RT are 'Name'
-      const imdb_small = await d3.csv("imdb_100.csv");
+      // const imdb_small = await d3.csv("imdb_100.csv");
       const imdb_large = await d3.csv("imdb_1000.csv");
       const rotten_tomatoes = await d3.csv("rotten_tomatoes.csv");
 
@@ -291,10 +294,12 @@
    //apply percentage to visualization
    
    
+  }
+  genrebuttons();
 
-    }
+//     }
 
-projectData();
+// projectData();
 
    
 

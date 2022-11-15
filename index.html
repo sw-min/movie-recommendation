@@ -153,6 +153,7 @@
                 } else {
                   filterTags.splice(filterTags.indexOf(i), 1);
                   // filterdata = data.filter(function(d){ return d['genre'].includes(!filterTags); });
+                  map.select("#preferencePERCENT").remove();
                   console.log("Removed!")
                   console.log(filterdata.length);
                   console.log(filterTags)

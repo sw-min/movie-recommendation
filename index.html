@@ -420,36 +420,6 @@ map.selectAll("circle").data(imdb_small, (d,i)=>i)
 
 
 
-
-
-
-
-
-
-
-
-
-  //HARDCODED DOT CHART
-  // const imdb_twenty = imdb_small.slice(0,20);
-  // // console.log(imdb_twenty);
-  // const imdb_forty = imdb_small.slice(20,40);
-  // const imdb_sixty = imdb_small.slice(40,60);
-  // const imdb_eighty = imdb_small.slice(60,80);
-  // const imdb_hundred = imdb_small.slice(80,100);
-  
-  // let inc_x_t = chartWidth;
-  // imdb_twenty.forEach( d => {
-  //       d.x = inc_x_t;
-  //       d.y = 25;
-  //       inc_x_t= inc_x_t - 8;
-  //     });
-
-  // let inc_x_f = chartWidth;
-  // imdb_forty.forEach( d => {
-  //       d.x = inc_x_f;
-  //       d.y = 35;
-  //       inc_x_f = inc_x_f - 8;
-  //     });
   // Add poster links from IMDb 1000 to 100
   imdb_small.forEach((movie) => {
     let movieTitle = imdb_large.find((d) => d["Series_Title"] === movie["original_title"]);
@@ -460,72 +430,7 @@ map.selectAll("circle").data(imdb_small, (d,i)=>i)
     movie["poster"] = poster;
   })
 
-  // console.log(imdb_small.filter(function(d){ return d['original_title'].includes("The Shawshank Redemption"); }));
 
-  // let inc_x_t = chartWidth;
-  // imdb_twenty.forEach( d => {
-  //       d.x = inc_x_t;
-  //       d.y = 25;
-  //       inc_x_t= inc_x_t - 8;
-  //     });
-
-  // let inc_x_f = chartWidth;
-  // imdb_forty.forEach( d => {
-  //       d.x = inc_x_f;
-  //       d.y = 35;
-  //       inc_x_f = inc_x_f - 8;
-  //     });
-      
-  // let inc_x_s = chartWidth;
-  // imdb_sixty.forEach( d => {
-  //       d.x = inc_x_s;
-  //       d.y = 45;
-  //       inc_x_s = inc_x_s - 8;
-  //     }); 
-  
-  // let inc_x_e = chartWidth;
-  // imdb_eighty.forEach( d => {
-  //       d.x = inc_x_e;
-  //       d.y = 55;
-  //       inc_x_e = inc_x_e - 8;
-  //     }); 
-  
-  // let inc_x_h = chartWidth;
-  // imdb_hundred.forEach( d => {
-  //       d.x = inc_x_h;
-  //       d.y = 65;
-  //       inc_x_h = inc_x_h - 8;
-  //     }); 
-
-  // map.selectAll("circle").data(imdb_small)
-  //                         .join("circle")
-  //                         .attr("r", 2)
-  //                         .attr("cx", d => d.x) //want to evenly distribute circles on x axis
-  //                         .attr("cy", d => d.y); //and evenly distribute in rows on y axis
-  //                         // .attr("fill", //colors based on filter and y position)
-
-  
-  
-  //circle drawing function for data visualization - josie
-
-  //call this on click for each filter?
-  // function movecircles(p) {
-  // //for each number in percent:
-  //   map.append(circle)
-  //       .attr("r", 2)
-  //       .attr("cx", ) //random? or in rows to look neater
-  //       .attr("cy", ) //put on a range in upper half of chart (random or rows) 
-  //       //do this with a scale and set domain and range??
-
-  // //for each number in 100-percent:
-  //   map.append(circle)
-  //       .attr("r", 2)
-  //       .attr("cx", ) //random? or in rows to look neater
-  //       .attr("cy", ) //put on a range in upper half of chart (random or rows) 
-  //       //do this with a scale and set domain and range?
-  // }
-
-  
   
   
   // Initial percentage text

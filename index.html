@@ -261,6 +261,7 @@
                     .attr("id", "preferencePERCENT")
                     .attr("x", 0)
                     .attr("y", 10);
+                 
                 })
                 //move that many dots to the bottom half of the svg
             })
@@ -374,6 +375,28 @@
                           .attr("cy", d => d.y); //and evenly distribute in rows on y axis
                           // .attr("fill", //colors based on filter and y position)
 
+  //circle drawing function
+
+  //call this on click for each filter?
+  function movecircles(p) {
+  //for each number in percent:
+    map.append(circle)
+        .attr("r", 2)
+        .attr("cx", ) //random? or in rows to look neater
+        .attr("cy", ) //put on a range in upper half of chart (random or rows) 
+        //do this with a scale and set domain and range??
+
+  //for each number in 100-percent:
+    map.append(circle)
+        .attr("r", 2)
+        .attr("cx", ) //random? or in rows to look neater
+        .attr("cy", ) //put on a range in upper half of chart (random or rows) 
+        //do this with a scale and set domain and range?
+  }
+
+  
+  
+  
   // Initial percentage text
   map.append("text").text("Press on some tags to see what percent of movies match!")
                   .attr("id", "preferencePERCENT")

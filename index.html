@@ -17,12 +17,38 @@
     }
     .content {
       display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .wrapperRow {
+      display: flex;
       flex-direction: row;
+      align-items: center;
+      justify-content: center;
     }
     .filter {
       padding-right: 50px;
-
     }
+
+    .filterbuttons button {
+      width: 5rem;
+      min-height: 5rem;
+      border-radius: 0.5rem;
+      border: 2px solid #b5bfd9;
+      background-color: #fff;
+      box-shadow: 0 5px 10px rgba(lightgrey, 0.1);
+      transition: 0.15s ease;
+      cursor: pointer;
+      position: relative
+    }
+    .filterbuttons button:hover {
+      border-color: lightgrey;
+		}
+    .filterbuttons button:active {
+      background-color: lightgrey;
+      border: 3px solid black;
+		}
   </style>
   <title>INFO 3300-Project 2</title>
 </head>
@@ -32,22 +58,25 @@
   <h3>Members: Josette, Laura, Peter, Steve Min</h3>
 
   <div class="content">
-  <div class="filter">
-    <h3> What is your preferred genre?</h3>
-    <div class="genrebuttons" id="genrebuttons"></div>
-    <h3> What decade of movies do you prefer?</h3>
-    <div class="erabuttons" id="erabuttons"></div>
-    <h3> How long do you want the runtime?</h3>
-    <div class="rtbuttons" id="rtbuttons"></div>
-    <h3> Do you prefer a specfic director?</h3>
-    <div class="directorbuttons" id="directorbuttons"></div>
-    <h3> Do you prefer a production company?</h3>
-    <div class="companybuttons" id="companybuttons"></div>
-  </div>
-  <div class="dotchart">
-    <h3>How unique is your movie taste?</h3>
-    <svg class = "svgclass" id="svg1" height="500" width="500"></svg> 
-    <h4>score: insert message according on percentage</h4>
+    <div class="wrapperRow">
+      <div class="filter">
+        <h3> What is your preferred genre?</h3>
+        <div class="filterbuttons" id="genrebuttons"></div>
+        <h3> What decade of movies do you prefer?</h3>
+        <div class="filterbuttons" id="erabuttons"></div>
+        <h3> How long do you want the runtime?</h3>
+        <div class="filterbuttons" id="rtbuttons"></div>
+        <h3> Do you prefer a specfic director?</h3>
+        <div class="filterbuttons" id="directorbuttons"></div>
+        <h3> Do you prefer a production company?</h3>
+        <div class="filterbuttons" id="companybuttons"></div>
+      </div>
+      <div class="dotchart">
+        <h3>How unique is your movie taste?</h3>
+        <svg class = "svgclass" id="svg1" height="500" width="500"></svg> 
+        <h4>score: insert message according on percentage</h4>
+      </div>
+    </div>
   </div>
 
 
@@ -58,6 +87,7 @@
         console.log('running genrebuttons')
       const imdb_small = await d3.csv("imdb_100.csv");
       const data = imdb_small
+      let filterTags = [];
       // var percent = '';
 
       //genre filter
@@ -69,18 +99,26 @@
             .append("button")
             .text(i)
             .on("click", function() {
-                
-                filterdata = data.filter(function(d){
-                  return d['genre'].includes(i);
-                })
-                // update(filterdata);
-                console.log(filterdata);
-                //count rows in filter data
-                percent = filterdata.length;
-                console.log(percent);
-                })
-                //count rows in filter data
-                //move that many dots to the bottom half of the svg
+                if(!filterTags.includes(i)) {
+                  filterTags.push(i);
+                  filterdata = data.filter(function(d){ return d['genre'].includes(i); });
+                  // update(filterdata);
+                  //count rows in filter data
+                  console.log("Added " + i + "!")
+                  percent = filterdata.length;
+                  console.log(percent);
+                  console.log(filterTags)
+                } else {
+                  filterTags.splice(filterTags.indexOf(i), 1);
+                  // filterdata = data.filter(function(d){ return d['genre'].includes(!filterTags); });
+                  console.log("Removed!")
+                  console.log(filterdata.length);
+                  console.log(filterTags)
+                }
+              })
+
+              //count rows in filter data
+              //move that many dots to the bottom half of the svg
             })
 
 

@@ -455,7 +455,7 @@ function updateMovieList (filteredMovies) {
     dict["Title"] = movie["original_title"];
     dict["Year"] = movie["year"];
     dict["Genre"] = movie["genre"];
-    //dict["Rating"] = movie["IMDB_Rating"];
+    dict["Runtime"] = movie["duration"];
 
     try{
     dict["Poster_Link"] = movie["Poster_Link"];

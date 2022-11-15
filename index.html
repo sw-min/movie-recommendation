@@ -89,6 +89,10 @@
     <div class="wrapperRow">
       <div class="wrapperColumn">
         <div class="filter">
+          <p> Guide: Click the following filters in order to see how unique your movie taste is compared to IMDB's top rated movies! 
+            <br>
+            (If you recieve a 0% and want to keep filtering, refresh the page and start over)
+          </p>
           <h3> What is your preferred genre?</h3>
           <div class="filterbuttons" id="genrebuttons"></div>
           <h3> What decade of movies do you prefer?</h3>
@@ -265,6 +269,7 @@
                     .attr("id", "preferencePERCENT")
                     .attr("x", 0)
                     .attr("y", 10);
+                 
                 })
                 //move that many dots to the bottom half of the svg
             })
@@ -379,6 +384,30 @@
                           .attr("cy", d => d.y); //and evenly distribute in rows on y axis
                           // .attr("fill", //colors based on filter and y position)
 
+  
+  
+  //circle drawing function for data visualization - josie
+
+  //call this on click for each filter?
+  // function movecircles(p) {
+  // //for each number in percent:
+  //   map.append(circle)
+  //       .attr("r", 2)
+  //       .attr("cx", ) //random? or in rows to look neater
+  //       .attr("cy", ) //put on a range in upper half of chart (random or rows) 
+  //       //do this with a scale and set domain and range??
+
+  // //for each number in 100-percent:
+  //   map.append(circle)
+  //       .attr("r", 2)
+  //       .attr("cx", ) //random? or in rows to look neater
+  //       .attr("cy", ) //put on a range in upper half of chart (random or rows) 
+  //       //do this with a scale and set domain and range?
+  // }
+
+  
+  
+  
   // Initial percentage text
   map.append("text").text("Press on some tags to see what percent of movies match!")
                   .attr("id", "preferencePERCENT")

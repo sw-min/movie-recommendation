@@ -23,6 +23,31 @@
       padding-right: 50px;
 
     }
+
+    .movie_rec {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .title {
+      font-weight: 600;
+      font-style: italic;
+    }
+
+    .year {
+      font-size: small;
+    }
+
+    .genre {
+      font-style: italic;
+      color: steelblue;
+    }
+
+    .recTitle {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: xx-large;
+      font-weight: 800;
+    }
+
   </style>
   <title>INFO 3300-Project 2</title>
 </head>
@@ -44,12 +69,12 @@
     <h3> Do you prefer a production company?</h3>
     <div class="companybuttons" id="companybuttons"></div>
   </div>
+
   <div class="dotchart">
     <h3>How unique is your movie taste?</h3>
     <svg class = "svgclass" id="svg1" height="500" width="500"></svg> 
-    <h4>score: insert message according on percentage</h4>
+    <div id="recommendations"></div>
   </div>
-
 
     
       <script>
@@ -292,6 +317,107 @@
    //have variables for each genre
    //have a calculator that calculates the percentage of movies that fit your preferences
    //apply percentage to visualization
+
+   const recCanvasHeight = 400;
+  const recCanvasWidth = 500;
+  const margins = {top: 10, right: 10, bottom: 50, left: 50};
+  const recChartWidth = recCanvasWidth - margins.left - margins.right;
+  const recChartHeight = recCanvasHeight - margins.top - margins.bottom;
+
+  let recSVG = d3.select("div#recommendations").append("svg")
+                  .attr("id", "svg")
+                  .attr("height", recCanvasHeight)
+                  .attr("width", recCanvasWidth);
+
+  const canvas = d3.select("svg#svg");
+
+  let movieList = [];
+  imdb_large.forEach( movie => {
+    let dict = {};
+    dict["Title"] = movie["Series_Title"];
+    dict["Year"] = movie["Released_Year"];
+    dict["Genre"] = movie["Genre"];
+    dict["Rating"] = movie["IMDB_Rating"];
+
+    try{
+    dict["Poster_Link"] = movie["Poster_Link"];
+    }
+    catch(err) {
+      dict["Poster_Link"] = null;
+    }
+    movieList.push(dict);
+  });
+
+  //Get top 3 movies
+  let movieRecs = movieList.slice(0, 3);
+  
+  //Get percent match to movie
+  let percentMatch = 90;
+
+  const yScale = d3.scaleLinear().domain( [0, movieRecs.length] )
+                                 .range( [recChartHeight, 0] );
+
+  
+  recSVG.append("text")
+        .attr("x", margins.top)
+        .attr("y", margins.bottom)
+        .text("Movie Recommendations")
+        .attr("class", "recTitle");
+
+  movieRecs.forEach( (movie, i) => {
+      let titleLength = Number(movie["Title"].length);
+
+      //Title
+      recSVG.append("text")
+          .attr("x", margins.left + 100)
+          .attr("y",  yScale(i) - 20)
+          .text(movie["Title"])
+          .attr("class", "title movie_rec");
+      
+      //Year
+      recSVG.append("text")
+        .attr("x", margins.left + 100)
+        .attr("y",  yScale(i))
+        .text( "(" + movie["Year"] + ")")
+        .attr("class", "year movie_rec");
+
+      // Genre
+      recSVG.append("text")
+        .attr("x", margins.left + 145)
+        .attr("y",  yScale(i))
+        .text(movie["Genre"])
+        .attr("class", "genre movie_rec");
+      
+      // Rating
+      recSVG.append("text")
+        .attr("x", margins.left + 100)
+        .attr("y",  yScale(i) + 20)
+        .text("How much of a match? " + String(percentMatch) + "%")
+        .attr("class", "rating movie_rec");
+
+      // Percent match
+      recSVG.append("text")
+        .attr("x", recChartWidth - margins.left)
+        .attr("y",  yScale(i) - 20)
+        .text("Rating: " + movie["Rating"])
+        .attr("class", "permatch movie_rec");
+          
+      if (movie["Poster_Link"] != null) {    
+        recSVG.append("image")
+        .attr("href", movie["Poster_Link"])
+        .attr("x", margins.left)
+        .attr("y", yScale(i) - 70)
+        .attr("width", 75)
+        .attr("height", 150);}
+      
+      else {
+        recSVG.append("image")
+        .attr("href", "/static/not_found.jpeg")
+        .attr("x", margins.left)
+        .attr("y", yScale(i) - 50)
+        .attr("width", 50)
+        .attr("height", 100); };
+    });
    
    
   }
@@ -307,10 +433,7 @@
     </script>
 </div>
 
-<h2> Movie Recommendations Go Here</h2>
-<h3>Recommendation</h3>
-<h3>Recommendation</h3>
-<h3>Recommendation</h3>
+
 
 
 </body>

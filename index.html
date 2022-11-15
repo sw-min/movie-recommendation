@@ -126,6 +126,7 @@
       const genrebuttons = async function () {
         console.log('running genrebuttons')
       const imdb_small = await d3.csv("imdb_100.csv");
+
       const data = imdb_small
       let filterTags = [];
       let dataset = [];
@@ -339,6 +340,7 @@
       //Movie names on the top 100 are 'original_title', top 1000 are 'Series_Title', and RT are 'Name'
       // const imdb_small = await d3.csv("imdb_100.csv");
       const imdb_large = await d3.csv("imdb_1000.csv");
+      console.log(imdb_large)
       const rotten_tomatoes = await d3.csv("rotten_tomatoes.csv");
 
       console.log(imdb_small);
@@ -355,6 +357,18 @@
   const imdb_eighty = imdb_small.slice(60,80);
   const imdb_hundred = imdb_small.slice(80,100);
   
+  // Add poster links from IMDb 1000 to 100
+  imdb_small.forEach((movie) => {
+    let movieTitle = imdb_large.find((d) => d["Series_Title"] === movie["original_title"]);
+    let poster = "";
+    if (movieTitle) {
+      poster = movieTitle["Poster_Link"];
+    }
+    movie["poster"] = poster;
+  })
+
+  // console.log(imdb_small.filter(function(d){ return d['original_title'].includes("The Shawshank Redemption"); }));
+
   let inc_x_t = chartWidth;
   imdb_twenty.forEach( d => {
         d.x = inc_x_t;
@@ -459,10 +473,10 @@ function updateMovieList (filteredMovies) {
     dict["Runtime"] = movie["duration"];
 
     try{
-    dict["Poster_Link"] = movie["Poster_Link"];
+    dict["poster"] = movie["poster"];
     }
     catch(err) {
-      dict["Poster_Link"] = null;
+      dict["poster"] = null;
     }
     movieList.push(dict);
   });
@@ -525,9 +539,9 @@ function updateMovieList (filteredMovies) {
         .text("Rating: " + movie["Rating"])
         .attr("class", "ratings movie_rec"); */
           
-      if (movie["Poster_Link"] != null) {    
+      if (movie["poster"] != null) {    
         recSVG.append("image")
-        .attr("href", movie["Poster_Link"])
+        .attr("href", movie["poster"])
         .attr("x", margins.left)
         .attr("y", yScale(i) - 70)
         .attr("width", 75)

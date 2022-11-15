@@ -50,8 +50,9 @@
       position: relative
     }
     .filterbuttons button:hover {
-      border-color: lightgrey;
+      border-color: black;
 		}
+    .filterbuttons button:active
 
     .movie_rec {
       font-family: Arial, Helvetica, sans-serif;
@@ -114,8 +115,8 @@
           <h3>How unique is your movie taste?</h3>
           <svg class = "svgclass" id="svg1" height="500" width="500"></svg> 
           <h4>score: insert message according on percentage</h4>
-          <div id="recommendations"></div>
         </div>
+        <div id="recommendations"></div>
       </div>
     </div>
   </div>
@@ -136,10 +137,11 @@
       // Creating buttons for genres
       genres.forEach(function(i) {
         // console.log('in genre for each loop')
-        d3.select("div#genrebuttons")
-          .append("input")
-          .attr("type", "checkbox")
+
+        d3.select('div#genrebuttons')
+          .append("button")
           .attr("id", i)
+          .text(i)
           .on("click", function() {
               if(!filterTags.includes(i)) {
                 filterTags.push(i);
@@ -158,6 +160,8 @@
                   .attr("x", 0)
                   .attr("y", 10)
                   .style("font-size", 24);
+                  d3.select(`button#${i}`).style("border-color", "black");
+
 
               } else {
                 filterTags.splice(filterTags.indexOf(i), 1);
@@ -166,14 +170,18 @@
                 console.log("Removed!")
                 console.log(filterdata.length);
                 console.log(filterTags)
+                d3.select(`button#${i}`).style("border-color", "b5bfd9");
+
               }
           });
             //count rows in filter data
             //move that many dots to the bottom half of the svg
-        d3.select("div#genrebuttons")
-          .append("label")
-          .attr("for", i)
-          .text(i);
+        // d3.select(`div#${i}`)
+        //   .append("label")
+        //   .attr("for", i)
+        //   .text(i);
+
+
       })
 
 
@@ -506,15 +514,15 @@ function updateMovieList (filteredMovies) {
       recSVG.append("text")
         .attr("x", margins.left + 100)
         .attr("y",  yScale(i) + 20)
-        .text("How much of a match? " + String(percentageCalculator()) + "%")
-        .attr("class", "rating movie_rec");
+        .text("How much of a match? " + "%") //Add percentage match!
+        .attr("class", "permatch movie_rec");
 
       /* // Rating
       recSVG.append("text")
         .attr("x", recChartWidth - margins.left)
         .attr("y",  yScale(i) - 20)
         .text("Rating: " + movie["Rating"])
-        .attr("class", "permatch movie_rec"); */
+        .attr("class", "ratings movie_rec"); */
           
       if (movie["Poster_Link"] != null) {    
         recSVG.append("image")

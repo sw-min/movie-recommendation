@@ -142,6 +142,7 @@
                 percent = filterdata.length;
                 console.log(filterTags);
                 dataset = filterdata;
+                updateMovieList(filterdata);
 
                 map.select("#preferencePERCENT").remove();
                 map.append("text").text(percent + "% of movies match your preferences.")
@@ -187,6 +188,7 @@
                 console.log(filterdata);
                 //count rows in filter data
                 percent = filterdata.length;
+                updateMovieList(filterdata);
                 console.log(percent);
                 map.select("#preferencePERCENT").remove();
                   map.append("text").text(percent + "% of movies match your preferences.")
@@ -223,6 +225,7 @@
                 console.log(filterdata);
                 //count rows in filter data
                 percent = filterdata.length;
+                updateMovieList(filterdata);
                 console.log(percent);
                 map.select("#preferencePERCENT").remove();
                   map.append("text").text(percent + "% of movies match your preferences.")
@@ -255,6 +258,7 @@
                 //count rows in filter data
                 console.log(filterdata);
                 percent = filterdata.length;
+                updateMovieList(filterdata);
                 console.log(percent);
                 map.select("#preferencePERCENT").remove();
                   map.append("text").text(percent + "% of movies match your preferences.")
@@ -283,6 +287,7 @@
                 //count rows in filter data
                 console.log(filterdata);
                 percent = filterdata.length;
+                updateMovieList(filterdata);
                 console.log(percent);
                 map.select("#preferencePERCENT").remove();
                   map.append("text").text(percent + "% of movies match your preferences.")
@@ -417,20 +422,22 @@
   const recChartHeight = recCanvasHeight - margins.top - margins.bottom;
 
   let recSVG = d3.select("div#recommendations").append("svg")
-                  .attr("id", "s")
+                  .attr("id", "movieRecSVG")
                   .attr("height", recCanvasHeight)
                   .attr("width", recCanvasWidth);
 
   const canvas = d3.select("svg#svg");
 
+function updateMovieList (filteredMovies) {
+  
+  movieFilterList = filteredMovies.map((x) => x);
   let movieList = [];
-
-  imdb_large.forEach( movie => {
+  movieFilterList.forEach( movie => {
     let dict = {};
-    dict["Title"] = movie["Series_Title"];
-    dict["Year"] = movie["Released_Year"];
-    dict["Genre"] = movie["Genre"];
-    dict["Rating"] = movie["IMDB_Rating"];
+    dict["Title"] = movie["original_title"];
+    dict["Year"] = movie["year"];
+    dict["Genre"] = movie["genre"];
+    //dict["Rating"] = movie["IMDB_Rating"];
 
     try{
     dict["Poster_Link"] = movie["Poster_Link"];
@@ -441,24 +448,26 @@
     movieList.push(dict);
   });
 
+  updateMovieRecs(movieList);
+
+}
+
   //Get top 3 movies
-  let movieRecs = movieList.slice(0, 3);
-  
-  console.log(movieRecs);
-
-  //Get percent match to movie
-  let percentMatch = 90;
-
-  const yScale = d3.scaleLinear().domain( [0, movieRecs.length] )
+  const yScale = d3.scaleLinear().domain( [0, 3] )
                                  .range( [recChartHeight, 0] );
 
-  
   recSVG.append("text")
         .attr("x", margins.top)
         .attr("y", margins.bottom)
         .text("Movie Recommendations")
         .attr("class", "recTitle");
 
+  function updateMovieRecs (movieRecsArray) {
+  d3.selectAll("svg#movieRecSVG > .movie_rec").remove();
+
+  let movieRecs = movieRecsArray.slice(0, 3);
+  console.log(movieRecs)
+  
   movieRecs.forEach( (movie, i) => {
       let titleLength = Number(movie["Title"].length);
 
@@ -483,19 +492,19 @@
         .text(movie["Genre"])
         .attr("class", "genre movie_rec");
       
-      // Rating
+      // Percent Match
       recSVG.append("text")
         .attr("x", margins.left + 100)
         .attr("y",  yScale(i) + 20)
-        .text("How much of a match? " + String(percentMatch) + "%")
+        .text("How much of a match? " + String(percentageCalculator()) + "%")
         .attr("class", "rating movie_rec");
 
-      // Percent match
+      /* // Rating
       recSVG.append("text")
         .attr("x", recChartWidth - margins.left)
         .attr("y",  yScale(i) - 20)
         .text("Rating: " + movie["Rating"])
-        .attr("class", "permatch movie_rec");
+        .attr("class", "permatch movie_rec"); */
           
       if (movie["Poster_Link"] != null) {    
         recSVG.append("image")
@@ -503,19 +512,21 @@
         .attr("x", margins.left)
         .attr("y", yScale(i) - 70)
         .attr("width", 75)
-        .attr("height", 150);}
+        .attr("height", 150)
+        .attr("class", "movie_rec");}
       
       else {
         recSVG.append("image")
-        .attr("href", "/static/not_found.jpeg")
+        .attr("href", "./static/not_found.jpeg")
         .attr("x", margins.left)
-        .attr("y", yScale(i) - 50)
-        .attr("width", 50)
-        .attr("height", 100); };
+        .attr("y", yScale(i) - 70)
+        .attr("width", 75)
+        .attr("height", 150)
+        .attr("class", "movie_rec"); };
     });
    
    
-  }
+  }}
   genrebuttons();
 
 //     }

@@ -6,8 +6,7 @@
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <style>
     .dotchart {
-      margin-left: 50px;
-      margin-right: 50px;
+      margin-top: 0px;
     }
     .svgclass {
       border-style: solid;
@@ -97,7 +96,7 @@
     <div class="wrapperRow">
       <div class="wrapperColumn">
         <div class="filter"> 
-          <h3> Select a genre: </h3>
+          <h3> Select one genre: </h3>
           <div class="filterbuttons" id="genrebuttons"></div>
           <h3> What decade of movies do you prefer?</h3>
           <div class="filterbuttons" id="erabuttons"></div>
@@ -112,8 +111,7 @@
       <div class="wrapperColumn">
         <div class="dotchart">
           <h3>How unique is your movie taste?</h3>
-          <svg class = "svgclass" id="svg1" height="300" width="500"></svg> 
-          <h4>score: insert message according on percentage</h4>
+          <svg class = "svgclass" id="svg1" height="320" width="500"></svg> 
         </div>
         <div id="recommendations"></div>
       </div>
@@ -407,6 +405,26 @@ function positionOfCircle(isBottom, index) {
 
 function dots(percent){
 console.log('running dots')
+//set score text at bottom (not working currently)
+  var feedbacktext = 'loading';
+  if (percent > 50) {
+    feedbacktext = 'Your taste is kinda basic..';
+    console.log('in if')
+  }
+  if (30 < percent < 50 ) {
+    feedbacktext = 'Your preferences are.. slightly unique'
+  }
+  if (20 < percent < 30) {
+    feedbacktext = 'You have unique taste'
+ }
+  if (0 < percent < 20) {
+    feedbacktext = 'Your preferences are very unique!'
+ }
+  if (percent === 0)  {
+    feedbacktext = "Your taste is so unique, we couldn't find any movies that match!"
+ }
+ results = feedbacktext;
+ map.append('text').text('Results: ' + results).attr("x", 0).attr("y", 300);
 percentTop= percent;
 //100 movies so can use percent as number of dots
 console.log(percentTop);

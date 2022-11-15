@@ -21,6 +21,13 @@
       align-items: center;
       justify-content: center;
     }
+    .wrapperColumn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 40%;
+    }
     .wrapperRow {
       display: flex;
       flex-direction: row;
@@ -84,29 +91,33 @@
 
   <div class="content">
     <div class="wrapperRow">
-      <div class="filter">
-        <h3> What is your preferred genre?</h3>
-        <div class="filterbuttons" id="genrebuttons"></div>
-        <h3> What decade of movies do you prefer?</h3>
-        <div class="filterbuttons" id="erabuttons"></div>
-        <h3> How long do you want the runtime?</h3>
-        <div class="filterbuttons" id="rtbuttons"></div>
-        <h3> Do you prefer a specfic director?</h3>
-        <div class="filterbuttons" id="directorbuttons"></div>
-        <h3> Do you prefer a production company?</h3>
-        <div class="filterbuttons" id="companybuttons"></div>
+      <div class="wrapperColumn">
+        <div class="filter">
+          <h3> What is your preferred genre?</h3>
+          <div class="filterbuttons" id="genrebuttons"></div>
+          <h3> What decade of movies do you prefer?</h3>
+          <div class="filterbuttons" id="erabuttons"></div>
+          <h3> How long do you want the runtime?</h3>
+          <div class="filterbuttons" id="rtbuttons"></div>
+          <h3> Do you prefer a specfic director?</h3>
+          <div class="filterbuttons" id="directorbuttons"></div>
+          <h3> Do you prefer a production company?</h3>
+          <div class="filterbuttons" id="companybuttons"></div>
+        </div>
       </div>
-      <div class="dotchart">
-        <h3>How unique is your movie taste?</h3>
-        <svg class = "svgclass" id="svg1" height="500" width="500"></svg> 
-        <h4>score: insert message according on percentage</h4>
+      <div class="wrapperColumn">
+        <div class="dotchart">
+          <h3>How unique is your movie taste?</h3>
+          <svg class = "svgclass" id="svg1" height="500" width="500"></svg> 
+          <h4>score: insert message according on percentage</h4>
+          <div id="recommendations"></div>
+        </div>
       </div>
     </div>
   </div>
 
     
-      <script>
-
+  <script>
       const genrebuttons = async function () {
         console.log('running genrebuttons')
       const imdb_small = await d3.csv("imdb_100.csv");

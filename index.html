@@ -86,17 +86,17 @@
   <h3>Members: Josette, Laura, Peter, Sung Woo</h3>
 
   <div class="content">
+    <p> Instructions: <br>Choose a genre and then click any of the following preferences to see how unique your movie taste is compared to IMDB's top rated movies! 
+      <br>
+      - If you add multiple preferences, add from top to bottom
+      <br>
+      - If you recieve a 0% and want to keep filtering, refresh the page or unclick and reclick a genre to start over
+      <br>
+      - Only click one box per question.
+    </p>
     <div class="wrapperRow">
       <div class="wrapperColumn">
-        <div class="filter">
-          <p> Instructions: <br>Choose a genre and then click any of the following preferences to see how unique your movie taste is compared to IMDB's top rated movies! 
-            <br>
-            - If you add multiple preferences, add from top to bottom
-            <br>
-            - If you recieve a 0% and want to keep filtering, refresh the page or unclick and reclick a genre to start over
-            <br>
-            - Only click one box per question.
-          </p>
+        <div class="filter"> 
           <h3> Select a genre: </h3>
           <div class="filterbuttons" id="genrebuttons"></div>
           <h3> What decade of movies do you prefer?</h3>
@@ -112,7 +112,7 @@
       <div class="wrapperColumn">
         <div class="dotchart">
           <h3>How unique is your movie taste?</h3>
-          <svg class = "svgclass" id="svg1" height="500" width="500"></svg> 
+          <svg class = "svgclass" id="svg1" height="300" width="500"></svg> 
           <h4>score: insert message according on percentage</h4>
         </div>
         <div id="recommendations"></div>
@@ -132,7 +132,7 @@
 
       // Genre filter
       const genres = ["Drama", "Crime", "Action", "Biography", "History", "Adventure", "Sci-Fi", "Fantasy", "Thriller", "Comedy", "War", "Romance", "Horror", "Family", "Western", "Film-Noir", "Music", "Musical", "Mystery", "Animation"]
-      
+      var percent='100';
       // Creating buttons for genres
       genres.forEach(function(i) {
         // console.log('in genre for each loop')
@@ -148,7 +148,8 @@
                 // update(filterdata);
                 //count rows in filter data
                 console.log("Added " + i + "!")
-                percent = filterdata.length;
+                let percent = filterdata.length;
+                dots(percent);
                 console.log(filterTags);
                 dataset = filterdata;
                 updateMovieList(filterdata);
@@ -202,7 +203,8 @@
                 // update(filterdata);
                 console.log(filterdata);
                 //count rows in filter data
-                percent = filterdata.length;
+                let percent = filterdata.length;
+                dots(percent);
                 updateMovieList(filterdata);
                 console.log(percent);
                 map.select("#preferencePERCENT").remove();
@@ -241,7 +243,8 @@
                 //** 90-120 range not working??
                 console.log(filterdata);
                 //count rows in filter data
-                percent = filterdata.length;
+                let percent = filterdata.length;
+                dots(percent);
                 updateMovieList(filterdata);
                 console.log(percent);
                 map.select("#preferencePERCENT").remove();
@@ -274,7 +277,8 @@
                 // update(filterdata);
                 //count rows in filter data
                 console.log(filterdata);
-                percent = filterdata.length;
+                let percent = filterdata.length;
+                dots(percent);
                 updateMovieList(filterdata);
                 console.log(percent);
                 map.select("#preferencePERCENT").remove();
@@ -303,7 +307,8 @@
                 // update(filterdata);
                 //count rows in filter data
                 console.log(filterdata);
-                percent = filterdata.length;
+                let percent = filterdata.length;
+                dots(percent);
                 updateMovieList(filterdata);
                 console.log(percent);
                 map.select("#preferencePERCENT").remove();
@@ -322,7 +327,7 @@
       
      
       
-      //HARDCODED DOT CHART CODE BELOW:
+//DOT CHART CODE BELOW:
 
       const svg = d3.select("#svg1");
       const width = svg.attr("width");
@@ -345,57 +350,132 @@
       // console.log(genre);
   
 
+//DYNAMIC DOT CHART
+var pointseparation = 10; //space between dots
+var pointsPerRow = 20; //points per row
 
+function positionOfCircle(isBottom, index) {
+  xPos = 20; //initial x position
+  yPos = 40; //initial y position
 
+  color = 'blue';
 
-  const imdb_twenty = imdb_small.slice(0,20);
-  // console.log(imdb_twenty);
-  const imdb_forty = imdb_small.slice(20,40);
-  const imdb_sixty = imdb_small.slice(40,60);
-  const imdb_eighty = imdb_small.slice(60,80);
-  const imdb_hundred = imdb_small.slice(80,100);
+  console.log(isBottom);
+  if (isBottom === true) {
+    yPos += 200;
+    color = 'red';
+  }
+
+  xPos += (index % pointsPerRow) * pointseparation;
+  // console.log(pointseparation);
+  // console.log(xPos);
+  yPos += Math.floor(index/pointsPerRow) * pointseparation;
+  // console.log(yPos);
+
   
-  let inc_x_t = chartWidth;
-  imdb_twenty.forEach( d => {
-        d.x = inc_x_t;
-        d.y = 25;
-        inc_x_t= inc_x_t - 8;
-      });
 
-  let inc_x_f = chartWidth;
-  imdb_forty.forEach( d => {
-        d.x = inc_x_f;
-        d.y = 35;
-        inc_x_f = inc_x_f - 8;
-      });
+  return {x:xPos, y:yPos, fill:color};
+
+}
+
+function dots(percent){
+console.log('running dots')
+percentTop= percent;
+//100 movies so can use percent as number of dots
+console.log(percentTop);
+map.selectAll("circle").data(imdb_small, (d,i)=>i)
+    .join("circle")
+    .attr("class", "dots")
+    .attr("r", 5)
+    .attr("cx", (d,i)=> {
+      let index = i;
+      let isBottom = false;
+      if (i > (percentTop-1)) {
+        index = index - percentTop;
+        isBottom = true;
+      }
+      return pos = positionOfCircle(isBottom, index).x
+    })
+    .attr("cy", (d,i)=> {
+      let index = i;
+      let isBottom = false;
+      if (i> (percentTop-1)) {
+        index = index - percentTop;
+        isBottom = true;
+      }
+      return pos = positionOfCircle(isBottom, index).y
+    })
+    .attr("fill", (d,i)=> {
+      let index = i;
+      let isBottom = false;
+      if (i > (percentTop-1)) {
+        index = index - percentTop;
+        isBottom = true;
+      }
+      return pos = positionOfCircle(isBottom, index).fill
+    })
+}
+
+
+
+
+
+
+
+
+
+
+
+
+  //HARDCODED DOT CHART
+  // const imdb_twenty = imdb_small.slice(0,20);
+  // // console.log(imdb_twenty);
+  // const imdb_forty = imdb_small.slice(20,40);
+  // const imdb_sixty = imdb_small.slice(40,60);
+  // const imdb_eighty = imdb_small.slice(60,80);
+  // const imdb_hundred = imdb_small.slice(80,100);
+  
+  // let inc_x_t = chartWidth;
+  // imdb_twenty.forEach( d => {
+  //       d.x = inc_x_t;
+  //       d.y = 25;
+  //       inc_x_t= inc_x_t - 8;
+  //     });
+
+  // let inc_x_f = chartWidth;
+  // imdb_forty.forEach( d => {
+  //       d.x = inc_x_f;
+  //       d.y = 35;
+  //       inc_x_f = inc_x_f - 8;
+  //     });
       
-  let inc_x_s = chartWidth;
-  imdb_sixty.forEach( d => {
-        d.x = inc_x_s;
-        d.y = 45;
-        inc_x_s = inc_x_s - 8;
-      }); 
+  // let inc_x_s = chartWidth;
+  // imdb_sixty.forEach( d => {
+  //       d.x = inc_x_s;
+  //       d.y = 45;
+  //       inc_x_s = inc_x_s - 8;
+  //     }); 
   
-  let inc_x_e = chartWidth;
-  imdb_eighty.forEach( d => {
-        d.x = inc_x_e;
-        d.y = 55;
-        inc_x_e = inc_x_e - 8;
-      }); 
+  // let inc_x_e = chartWidth;
+  // imdb_eighty.forEach( d => {
+  //       d.x = inc_x_e;
+  //       d.y = 55;
+  //       inc_x_e = inc_x_e - 8;
+  //     }); 
   
-  let inc_x_h = chartWidth;
-  imdb_hundred.forEach( d => {
-        d.x = inc_x_h;
-        d.y = 65;
-        inc_x_h = inc_x_h - 8;
-      }); 
+  // let inc_x_h = chartWidth;
+  // imdb_hundred.forEach( d => {
+  //       d.x = inc_x_h;
+  //       d.y = 65;
+  //       inc_x_h = inc_x_h - 8;
+  //     }); 
 
-  map.selectAll("circle").data(imdb_small)
-                          .join("circle")
-                          .attr("r", 2)
-                          .attr("cx", d => d.x) //want to evenly distribute circles on x axis
-                          .attr("cy", d => d.y); //and evenly distribute in rows on y axis
-                          // .attr("fill", //colors based on filter and y position)
+  // map.selectAll("circle").data(imdb_small)
+  //                         .join("circle")
+  //                         .attr("r", 2)
+  //                         .attr("cx", d => d.x) //want to evenly distribute circles on x axis
+  //                         .attr("cy", d => d.y); //and evenly distribute in rows on y axis
+  //                         // .attr("fill", //colors based on filter and y position)
 
   
   
@@ -428,10 +508,11 @@
                   .attr("y", 10);;
 
   // Handmade legend
-  map.append("circle").attr("cx",200).attr("cy",130).attr("r", 2)
-  map.append("circle").attr("cx",200).attr("cy",160).attr("r", 2).style("fill", "#FF0000")
-  map.append("text").attr("x", 220).attr("y", 130).text("1 Movie that fits filter").style("font-size", "15px").attr("alignment-baseline","middle")
-  map.append("text").attr("x", 220).attr("y", 160).text("1 Movie that doesn't fit filters").style("font-size", "15px").attr("alignment-baseline","middle")
+  // map.append("circle").attr("cx",200).attr("cy",130).attr("r", 2)
+  // map.append("circle").attr("cx",200).attr("cy",160).attr("r", 2).style("fill", "#FF0000")
+  map.append("text").attr("x", 220).attr("y", 130).text("Movies that match preferences").style("font-size", "15px").attr("alignment-baseline","middle").style('fill', 'blue')
+  // map.append("line").attr("x1", 0).attr("x2", 500).attr("y1", 145).attr("y2", 145)
+  map.append("text").attr("x", 220).attr("y", 160).text("Movies that don't").style("font-size", "15px").attr("alignment-baseline","middle").style('fill', 'red')
 
   // MOVIE RECOMMENDATIONS SECTION
   const recCanvasHeight = 400;

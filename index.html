@@ -49,10 +49,15 @@
       cursor: pointer;
       position: relative
     }
-    .filterbuttons button:hover {
+    .filterbuttons button:hover, .filterbuttons button:active  {
       border-color: black;
 		}
-    .filterbuttons button:active
+
+    .recTitle {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: xx-large;
+      font-weight: 800;
+    }
 
     .movie_rec {
       font-family: Arial, Helvetica, sans-serif;
@@ -63,19 +68,13 @@
       font-style: italic;
     }
 
-    .year {
-      font-size: small;
-    }
-
     .genre {
       font-style: italic;
       color: steelblue;
     }
 
-    .recTitle {
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: xx-large;
-      font-weight: 800;
+    .year {
+      font-size: small;
     }
 
   </style>
@@ -457,7 +456,7 @@ function updateMovieList (filteredMovies) {
     dict["Title"] = movie["original_title"];
     dict["Year"] = movie["year"];
     dict["Genre"] = movie["genre"];
-    //dict["Rating"] = movie["IMDB_Rating"];
+    dict["Runtime"] = movie["duration"];
 
     try{
     dict["Poster_Link"] = movie["Poster_Link"];
@@ -512,11 +511,11 @@ function updateMovieList (filteredMovies) {
         .text(movie["Genre"])
         .attr("class", "genre movie_rec");
       
-      // Percent Match
-      recSVG.append("text")
+         // Runtime
+         recSVG.append("text")
         .attr("x", margins.left + 100)
         .attr("y",  yScale(i) + 20)
-        .text("How much of a match? " + "%") //Add percentage match!
+        .text("Runtime: "+ movie["Runtime"] + " minutes") //Add percentage match!
         .attr("class", "permatch movie_rec");
 
       /* // Rating

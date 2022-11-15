@@ -52,10 +52,6 @@
     .filterbuttons button:hover {
       border-color: lightgrey;
 		}
-    .filterbuttons button:active {
-      background-color: lightgrey;
-      border: 3px solid black;
-		}
 
     .movie_rec {
       font-family: Arial, Helvetica, sans-serif;
@@ -118,54 +114,62 @@
 
     
   <script>
+      // Request data
       const genrebuttons = async function () {
         console.log('running genrebuttons')
       const imdb_small = await d3.csv("imdb_100.csv");
       const data = imdb_small
       let filterTags = [];
-      // var percent = '';
+      let dataset = [];
 
-      //genre filter
+      // Genre filter
       const genres = ["Drama", "Crime", "Action", "Biography", "History", "Adventure", "Sci-Fi", "Fantasy", "Thriller", "Comedy", "War", "Romance", "Horror", "Family", "Western", "Film-Noir", "Music", "Musical", "Mystery", "Animation"]
       
-        genres.forEach(function(i) {
-          console.log('in genre for each loop')
-          d3.select("div#genrebuttons")
-            .append("button")
-            .text(i)
-            .on("click", function() {
-                if(!filterTags.includes(i)) {
-                  filterTags.push(i);
-                  filterdata = data.filter(function(d){ return d['genre'].includes(i); });
-                  // update(filterdata);
-                  //count rows in filter data
-                  console.log("Added " + i + "!")
-                  percent = filterdata.length;
-                  console.log(percent);
-                  console.log(filterTags)
+      // Creating buttons for genres
+      genres.forEach(function(i) {
+        // console.log('in genre for each loop')
+        d3.select("div#genrebuttons")
+          .append("input")
+          .attr("type", "checkbox")
+          .attr("id", i)
+          .on("click", function() {
+              if(!filterTags.includes(i)) {
+                filterTags.push(i);
+                filterdata = data.filter(function(d){ return d['genre'].includes(i); });
+                // update(filterdata);
+                //count rows in filter data
+                console.log("Added " + i + "!")
+                percent = filterdata.length;
+                console.log(filterTags);
+                dataset = filterdata;
 
-                  map.select("#preferencePERCENT").remove();
-                  map.append("text").text(percent + "% of movies match your preferences.")
-                    .attr("id", "preferencePERCENT")
-                    .attr("x", 0)
-                    .attr("y", 10);
+                map.select("#preferencePERCENT").remove();
+                map.append("text").text(percent + "% of movies match your preferences.")
+                  .attr("id", "preferencePERCENT")
+                  .attr("x", 0)
+                  .attr("y", 10)
+                  .style("font-size", 24);
 
-                } else {
-                  filterTags.splice(filterTags.indexOf(i), 1);
-                  // filterdata = data.filter(function(d){ return d['genre'].includes(!filterTags); });
-                  map.select("#preferencePERCENT").remove();
-                  console.log("Removed!")
-                  console.log(filterdata.length);
-                  console.log(filterTags)
-                }
-              })
+              } else {
+                filterTags.splice(filterTags.indexOf(i), 1);
+                // filterdata = data.filter(function(d){ return d['genre'].includes(!filterTags); });
+                map.select("#preferencePERCENT").remove();
+                console.log("Removed!")
+                console.log(filterdata.length);
+                console.log(filterTags)
+              }
+          });
+            //count rows in filter data
+            //move that many dots to the bottom half of the svg
+        d3.select("div#genrebuttons")
+          .append("label")
+          .attr("for", i)
+          .text(i);
+      })
 
-              //count rows in filter data
-              //move that many dots to the bottom half of the svg
-            })
 
 
-      //era filter
+      // Era filter
       const eras = ["1920s", "1930s", "1940s", "1950s", "1960s", "1970s", "1980s", "1990s", "2000s", "2010s", "2020s"]
 
       eras.forEach(function(i) {
@@ -343,37 +347,24 @@
         inc_x_h = inc_x_h - 8;
       }); 
 
-    map.selectAll("circle").data(imdb_small)
-                            .join("circle")
-                            .attr("r", 2)
-                            .attr("cx", d => d.x) //want to evenly distribute circles on x axis
-                            .attr("cy", d => d.y); //and evenly distribute in rows on y axis
-                            // .attr("fill", //colors based on filter and y position)
+  map.selectAll("circle").data(imdb_small)
+                          .join("circle")
+                          .attr("r", 2)
+                          .attr("cx", d => d.x) //want to evenly distribute circles on x axis
+                          .attr("cy", d => d.y); //and evenly distribute in rows on y axis
+                          // .attr("fill", //colors based on filter and y position)
 
-    map.append("text").text(percentageCalculator() + "% of movies match your preferences.")
-                    .attr("id", "preferencePERCENT")
-                    .attr("x", 0)
-                    .attr("y", 10);;
+  // Initial percentage text
+  map.append("text").text("Press on some tags to see what percent of movies match!")
+                  .attr("id", "preferencePERCENT")
+                  .attr("x", 0)
+                  .attr("y", 10);;
 
-    // Handmade legend
-    map.append("circle").attr("cx",200).attr("cy",130).attr("r", 2)
-    map.append("circle").attr("cx",200).attr("cy",160).attr("r", 2).style("fill", "#FF0000")
-    map.append("text").attr("x", 220).attr("y", 130).text("1 Movie that fits filter").style("font-size", "15px").attr("alignment-baseline","middle")
-    map.append("text").attr("x", 220).attr("y", 160).text("1 Movie that doesn't fit filters").style("font-size", "15px").attr("alignment-baseline","middle")
-
-    //filtering implementation
-    //have variables for each genre
-    //have a calculator that calculates the percentage of movies that fit your preferences
-    function percentageCalculator() {
-      let percentage = 0;
-      percentage = (100 / imdb_small.length) * 100; 
-      return percentage;
-    }
-
-   //filtering implementation
-   //have variables for each genre
-   //have a calculator that calculates the percentage of movies that fit your preferences
-   //apply percentage to visualization
+  // Handmade legend
+  map.append("circle").attr("cx",200).attr("cy",130).attr("r", 2)
+  map.append("circle").attr("cx",200).attr("cy",160).attr("r", 2).style("fill", "#FF0000")
+  map.append("text").attr("x", 220).attr("y", 130).text("1 Movie that fits filter").style("font-size", "15px").attr("alignment-baseline","middle")
+  map.append("text").attr("x", 220).attr("y", 160).text("1 Movie that doesn't fit filters").style("font-size", "15px").attr("alignment-baseline","middle")
 
   // MOVIE RECOMMENDATIONS SECTION
   const recCanvasHeight = 400;
@@ -390,6 +381,7 @@
   const canvas = d3.select("svg#svg");
 
   let movieList = [];
+
   imdb_large.forEach( movie => {
     let dict = {};
     dict["Title"] = movie["Series_Title"];
@@ -409,6 +401,8 @@
   //Get top 3 movies
   let movieRecs = movieList.slice(0, 3);
   
+  console.log(movieRecs);
+
   //Get percent match to movie
   let percentMatch = 90;
 

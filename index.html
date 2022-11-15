@@ -510,11 +510,11 @@ function updateMovieList (filteredMovies) {
         .text(movie["Genre"])
         .attr("class", "genre movie_rec");
       
-      // Percent Match
-      recSVG.append("text")
+         // Runtime
+         recSVG.append("text")
         .attr("x", margins.left + 100)
         .attr("y",  yScale(i) + 20)
-        .text("How much of a match? " + "%") //Add percentage match!
+        .text("Runtime: "+ movie["Runtime"] + " minutes") //Add percentage match!
         .attr("class", "permatch movie_rec");
 
       /* // Rating

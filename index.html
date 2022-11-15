@@ -89,11 +89,15 @@
     <div class="wrapperRow">
       <div class="wrapperColumn">
         <div class="filter">
-          <p> Guide: Click the following filters in order to see how unique your movie taste is compared to IMDB's top rated movies! 
+          <p> Guide: <br>Choose a genre and then click any of the following preferences to see how unique your movie taste is compared to IMDB's top rated movies! 
             <br>
-            (If you recieve a 0% and want to keep filtering, refresh the page and start over)
+            - If you add multiple preferences, add from top to bottom
+            <br>
+            - If you recieve a 0% and want to keep filtering, refresh the page or unclick and reclick a genre to start over
+            <br>
+            - Only click one box per question.
           </p>
-          <h3> What is your preferred genre?</h3>
+          <h3> Select a genre: </h3>
           <div class="filterbuttons" id="genrebuttons"></div>
           <h3> What decade of movies do you prefer?</h3>
           <div class="filterbuttons" id="erabuttons"></div>
@@ -345,35 +349,35 @@
   let inc_x_t = chartWidth;
   imdb_twenty.forEach( d => {
         d.x = inc_x_t;
-        d.y = 10;
+        d.y = 25;
         inc_x_t= inc_x_t - 8;
       });
 
   let inc_x_f = chartWidth;
   imdb_forty.forEach( d => {
         d.x = inc_x_f;
-        d.y = 20;
+        d.y = 35;
         inc_x_f = inc_x_f - 8;
       });
       
   let inc_x_s = chartWidth;
   imdb_sixty.forEach( d => {
         d.x = inc_x_s;
-        d.y = 30;
+        d.y = 45;
         inc_x_s = inc_x_s - 8;
       }); 
   
   let inc_x_e = chartWidth;
   imdb_eighty.forEach( d => {
         d.x = inc_x_e;
-        d.y = 40;
+        d.y = 55;
         inc_x_e = inc_x_e - 8;
       }); 
   
   let inc_x_h = chartWidth;
   imdb_hundred.forEach( d => {
         d.x = inc_x_h;
-        d.y = 50;
+        d.y = 65;
         inc_x_h = inc_x_h - 8;
       }); 
 

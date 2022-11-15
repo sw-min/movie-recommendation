@@ -143,6 +143,13 @@
                   percent = filterdata.length;
                   console.log(percent);
                   console.log(filterTags)
+
+                  map.select("#preferencePERCENT").remove();
+                  map.append("text").text(percent + "% of movies match your preferences.")
+                    .attr("id", "preferencePERCENT")
+                    .attr("x", 0)
+                    .attr("y", 10);
+
                 } else {
                   filterTags.splice(filterTags.indexOf(i), 1);
                   // filterdata = data.filter(function(d){ return d['genre'].includes(!filterTags); });
@@ -343,6 +350,7 @@
                             // .attr("fill", //colors based on filter and y position)
 
     map.append("text").text(percentageCalculator() + "% of movies match your preferences.")
+                    .attr("id", "preferencePERCENT")
                     .attr("x", 0)
                     .attr("y", 10);;
 

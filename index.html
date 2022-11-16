@@ -405,26 +405,6 @@ function positionOfCircle(isBottom, index) {
 
 function dots(percent){
 console.log('running dots')
-//set score text at bottom (not working currently)
-  var feedbacktext = 'loading';
-  if (percent > 50) {
-    feedbacktext = 'Your taste is kinda basic..';
-    console.log('in if')
-  }
-  if (30 < percent < 50 ) {
-    feedbacktext = 'Your preferences are.. slightly unique'
-  }
-  if (20 < percent < 30) {
-    feedbacktext = 'You have unique taste'
- }
-  if (0 < percent < 20) {
-    feedbacktext = 'Your preferences are very unique!'
- }
-  if (percent === 0)  {
-    feedbacktext = "Your taste is so unique, we couldn't find any movies that match!"
- }
- results = feedbacktext;
- map.append('text').text('Results: ' + results).attr("x", 0).attr("y", 300);
 percentTop= percent;
 //100 movies so can use percent as number of dots
 console.log(percentTop);

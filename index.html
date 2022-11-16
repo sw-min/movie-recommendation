@@ -249,7 +249,7 @@
 
         //duration filter
 
-        const runtimes = ["60-90", "90-120", "120-150", "150-180", "180-210", "210-240"]
+        const runtimes = ["60-90", "090-120", "120-150", "150-180", "180-210", "210-240"]
         let run = [];
 
         //90-120 broken?
@@ -262,9 +262,16 @@
               if(run.length===0) { 
                 run.push("a" + i);
                 const interval = i.split('-')
+                console.log(interval)
                 start = interval[0]
+                console.log(start)
                 end = interval[1]
+                console.log(end)
                 filterdata = filterdata.filter(function(d){
+                  if (d['duration']>=start && d['duration']<=end){
+                    inwindow = true;
+                    console.log('in window' + inwindow)
+                  }
                   return d['duration']>=start && d['duration']<=end;
                 })
                 // update(filterdata);

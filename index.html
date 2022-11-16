@@ -1,5 +1,4 @@
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -75,8 +74,8 @@
       cursor: pointer;
       overflow: hidden;
     }
-    .filterbuttons button:hover, .filterbuttons button:active  {
-      border-color: black;
+    .clearbutton button:hover, .clearbutton button:active  {
+      border-color: white;
 		}
 
     .recTitle {
@@ -106,10 +105,9 @@
   </style>
   <title>INFO 3300-Project 2</title>
 </head>
-
 <body>
   <h1>INFO 3300 - Project 2</h1>
-  <h3>Members: Josette, Laura, Peter, Sung Woo</h3>
+  <h3>Members: Laura Fonseca Pauthz, Josette Vignos, Peter Huang, Sung Woo Min</h3>
 
   <div class="content">
     <p> Instructions: <br>Choose a genre and then click any of the following preferences to see how unique your movie taste is compared to IMDB's top rated movies! 
@@ -150,7 +148,6 @@
       </div>
     </div>
   </div>
-
     
   <script>
       // Request data
@@ -164,55 +161,43 @@
 
       // Genre filter
       const genres = ["Drama", "Crime", "Action", "Biography", "History", "Adventure", "Sci-Fi", "Fantasy", "Thriller", "Comedy", "War", "Romance", "Horror", "Family", "Western", "Film-Noir", "Music", "Musical", "Mystery", "Animation"]
-      var percent='100';
+      let percent='100';
       // Creating buttons for genres
       genres.forEach(function(i) {
         // console.log('in genre for each loop')
-
         d3.select('div#genrebuttons')
           .append("button")
           .attr("id", i)
           .text(i)
           .on("click", function() {
-              if(!filterTags.includes(i)) {
-                filterTags.push(i);
-                filterdata = data.filter(function(d){ return d['genre'].includes(i); });
-                // update(filterdata);
-                //count rows in filter data
-                let percent = filterdata.length;
-                dots(percent);
-                updateMovieList(filterdata);
-
-                map.select("#preferencePERCENT").remove();
-                map.append("text").text(percent + "% of movies match your preferences.")
-                  .attr("id", "preferencePERCENT")
-                  .attr("x", 0)
-                  .attr("y", 10)
-                  .style("font-size", 24);
-                  d3.select(`button#${i}`).style("background-color", "lightgrey");
-              } else {
-                filterTags.splice(filterTags.indexOf(i), 1);
-                // filterdata = data.filter(function(d){ return d['genre'].includes(!filterTags); });
-                map.select("#preferencePERCENT").remove();
-                d3.select(`button#${i}`).style("background-color", "white");
-              }
+            if(!filterTags.includes(i)) {
+              filterTags.push(i);
+              filterdata = data.filter(function(d){ return d['genre'].includes(i); });
+              // update(filterdata);
+              //count rows in filter data
+              let percent = filterdata.length;
+              dots(percent);
+              updateMovieList(filterdata);
+              map.select("#preferencePERCENT").remove();
+              map.append("text").text(percent + "% of movies match your preferences.")
+                .attr("id", "preferencePERCENT")
+                .attr("x", 0)
+                .attr("y", 10)
+                .style("font-size", 24);
+                d3.select(`button#${i}`).style("background-color", "lightgrey");
+            } else {
+              // Remove from holder array and reset button once pressed again
+              filterTags.splice(filterTags.indexOf(i), 1);
+              map.select("#preferencePERCENT").remove();
+              d3.select(`button#${i}`).style("background-color", "white");
+            }
           });
-            //count rows in filter data
-            //move that many dots to the bottom half of the svg
-        // d3.select(`div#${i}`)
-        //   .append("label")
-        //   .attr("for", i)
-        //   .text(i);
-
-
       })
-
-
 
       // Era filter
       const eras = ["1920s", "1930s", "1940s", "1950s", "1960s", "1970s", "1980s", "1990s", "2000s", "2010s", "2020s"]
       let era = [];
-
+      // Creating buttons for decades
       eras.forEach(function(i) {
           console.log('in era for-each loop')
           d3.select("div#erabuttons")
@@ -239,6 +224,7 @@
                     .attr("y", 10);
                   d3.select(`button#${"a" + i}`).style("background-color", "lightgrey");
                 } else {
+                  // Remove from holder array and reset button once pressed again
                   era.splice(era.indexOf(i), 1);
                   d3.select(`button#${"a" + i}`).style("background-color", "white");
                 }
@@ -252,7 +238,7 @@
         const runtimes = ["60-90", "090-120", "120-150", "150-180", "180-210", "210-240"]
         let run = [];
 
-        //90-120 broken?
+        // Creating buttons for runtimes
         runtimes.forEach(function(i) {
           d3.select("div#rtbuttons")
             .append("button")
@@ -288,14 +274,12 @@
                   .attr("y", 10);
                 d3.select(`button#${"a" + i}`).style("background-color", "lightgrey");
               } else {
+                  // Remove from holder array and reset button once pressed again
                   run.splice(run.indexOf("a" + i), 1);
                   d3.select(`button#${"a" + i}`).style("background-color", "white");
               }
-              })
-                //move that many dots to the bottom half of the svg
             })
-
-        
+        })
 
         //repeat for next filter and feed in already-filtered filterdata array to layer the filters
         //count new number of dots each time and only have that amount display on the bottom
@@ -304,6 +288,7 @@
         const directors = ['Alfred Hitchcock', 'Quentin Tarantino', 'Steven Spielberg', 'Christopher Nolan', 'David Fincher']
         const direct = [];
 
+          // Creating buttons for directors
          directors.forEach(function(i) {
           console.log('in director for-each loop')
           d3.select("div#directorbuttons")
@@ -329,20 +314,19 @@
                     .attr("y", 10);
                 d3.select(`button#${i.replace(" ", "")}`).style("background-color", "lightgrey");
               } else {
+                 // Remove from holder array and reset button once pressed again
                 direct.splice(direct.indexOf(i.replace(" ", "")), 1);
                 d3.select(`button#${i.replace(" ", "")}`).style("background-color", "white");
               }
             })
-                //move that many dots to the bottom half of the svg
-            })
+        })
 
           //company filter
           const production_companies = ['Paramount Pictures', 'Universal Pictures', 'Warner Bros.', 'Castle Rock Entertainment']
-
           let prod = [];
 
+          // Creating buttons for production companies
           production_companies.forEach(function(i) {
-          console.log('in company for-each loop')
           d3.select("div#companybuttons")
             .append("button")
             .attr("id", i.replace(" ", "").replace(" ", "").replace(".", ""))
@@ -367,12 +351,14 @@
                   .attr("y", 10);
                 d3.select(`button#${i.replace(" ", "").replace(" ", "").replace(".", "")}`).style("background-color", "lightgrey");
                 } else {
+                  // Remove from holder array and reset button once pressed again
                   prod.splice(prod.indexOf(i.replace(" ", "").replace(" ", "").replace(".", "")), 1);
                   d3.select(`button#${i.replace(" ", "").replace(" ", "").replace(".", "")}`).style("background-color", "white");
                 }
-              })
-                //move that many dots to the bottom half of the svg
             })
+          })
+
+          // Clear button resets all d3 elements to its original state
           d3.select('div#clear')
             .append("button")
             .attr("id", "clear")
@@ -392,16 +378,8 @@
                   .attr("y", 10);
             }
          )   
-
       
-  
-     
-
-      
-     
-      
-//DOT CHART CODE BELOW:
-
+      //DOT CHART CODE BELOW
       const svg = d3.select("#svg1");
       const width = svg.attr("width");
       const height = svg.attr("height");
@@ -415,80 +393,72 @@
        console.log('in async')
 
       //Movie names on the top 100 are 'original_title', top 1000 are 'Series_Title', and RT are 'Name'
-      // const imdb_small = await d3.csv("imdb_100.csv");
       const imdb_large = await d3.csv("imdb_1000.csv");
-      console.log(imdb_large)
       const rotten_tomatoes = await d3.csv("rotten_tomatoes.csv");
 
-      console.log(imdb_small);
-      // console.log(genre);
-  
+    //DYNAMIC DOT CHART
+    let pointseparation = 10; //space between dots
+    let pointsPerRow = 20; //points per row
 
-//DYNAMIC DOT CHART
-var pointseparation = 10; //space between dots
-var pointsPerRow = 20; //points per row
+    function positionOfCircle(isBottom, index) {
+      xPos = 20; //initial x position
+      yPos = 40; //initial y position
 
-function positionOfCircle(isBottom, index) {
-  xPos = 20; //initial x position
-  yPos = 40; //initial y position
+      color = 'blue';
 
-  color = 'blue';
+      // console.log(isBottom);
+      if (isBottom === true) {
+        yPos += 200;
+        color = 'red';
+      }
 
-  // console.log(isBottom);
-  if (isBottom === true) {
-    yPos += 200;
-    color = 'red';
+      xPos += (index % pointsPerRow) * pointseparation;
+      // console.log(pointseparation);
+      // console.log(xPos);
+      yPos += Math.floor(index/pointsPerRow) * pointseparation;
+      // console.log(yPos);      
+
+      return {x:xPos, y:yPos, fill:color};
+
+    }
+
+  function dots(percent){
+    console.log('running dots')
+    percentTop= percent;
+    //100 movies so can use percent as number of dots
+    // console.log(percentTop);
+    map.selectAll("circle").data(imdb_small, (d,i)=>i)
+        .join("circle")
+        .attr("class", "dots")
+        .attr("r", 5)
+        .attr("cx", (d,i)=> {
+          let index = i;
+          let isBottom = false;
+          if (i > (percentTop-1)) {
+            index = index - percentTop;
+            isBottom = true;
+          }
+          return pos = positionOfCircle(isBottom, index).x
+        })
+        .attr("cy", (d,i)=> {
+          let index = i;
+          let isBottom = false;
+          if (i> (percentTop-1)) {
+            index = index - percentTop;
+            isBottom = true;
+          }
+          return pos = positionOfCircle(isBottom, index).y
+        })
+        .attr("fill", (d,i)=> {
+          let index = i;
+          let isBottom = false;
+          if (i > (percentTop-1)) {
+            index = index - percentTop;
+            isBottom = true;
+          }
+          return pos = positionOfCircle(isBottom, index).fill
+        })
   }
-
-  xPos += (index % pointsPerRow) * pointseparation;
-  // console.log(pointseparation);
-  // console.log(xPos);
-  yPos += Math.floor(index/pointsPerRow) * pointseparation;
-  // console.log(yPos);
-
-  
-
-  return {x:xPos, y:yPos, fill:color};
-
-}
-
-function dots(percent){
-console.log('running dots')
-percentTop= percent;
-//100 movies so can use percent as number of dots
-// console.log(percentTop);
-map.selectAll("circle").data(imdb_small, (d,i)=>i)
-    .join("circle")
-    .attr("class", "dots")
-    .attr("r", 5)
-    .attr("cx", (d,i)=> {
-      let index = i;
-      let isBottom = false;
-      if (i > (percentTop-1)) {
-        index = index - percentTop;
-        isBottom = true;
-      }
-      return pos = positionOfCircle(isBottom, index).x
-    })
-    .attr("cy", (d,i)=> {
-      let index = i;
-      let isBottom = false;
-      if (i> (percentTop-1)) {
-        index = index - percentTop;
-        isBottom = true;
-      }
-      return pos = positionOfCircle(isBottom, index).y
-    })
-    .attr("fill", (d,i)=> {
-      let index = i;
-      let isBottom = false;
-      if (i > (percentTop-1)) {
-        index = index - percentTop;
-        isBottom = true;
-      }
-      return pos = positionOfCircle(isBottom, index).fill
-    })
-}
 
   // Add poster links from IMDb 1000 to 100
   imdb_small.forEach((movie) => {
@@ -507,10 +477,7 @@ map.selectAll("circle").data(imdb_small, (d,i)=>i)
                   .attr("y", 10);;
 
   // Handmade legend
-  // map.append("circle").attr("cx",200).attr("cy",130).attr("r", 2)
-  // map.append("circle").attr("cx",200).attr("cy",160).attr("r", 2).style("fill", "#FF0000")
   map.append("text").attr("x", 220).attr("y", 130).text("Movies that match preferences").style("font-size", "15px").attr("alignment-baseline","middle").style('fill', 'blue')
-  // map.append("line").attr("x1", 0).attr("x2", 500).attr("y1", 145).attr("y2", 145)
   map.append("text").attr("x", 220).attr("y", 160).text("Movies that don't").style("font-size", "15px").attr("alignment-baseline","middle").style('fill', 'red')
 
   // MOVIE RECOMMENDATIONS SECTION
@@ -528,29 +495,29 @@ map.selectAll("circle").data(imdb_small, (d,i)=>i)
 
   const canvas = d3.select("svg#svg");
 
-function updateMovieList (filteredMovies) {
-  
-  movieFilterList = filteredMovies.map((x) => x);
-  let movieList = [];
-  movieFilterList.forEach( movie => {
-    let dict = {};
-    dict["Title"] = movie["original_title"];
-    dict["Year"] = movie["year"];
-    dict["Genre"] = movie["genre"];
-    dict["Runtime"] = movie["duration"];
+  function updateMovieList (filteredMovies) {
+    
+    movieFilterList = filteredMovies.map((x) => x);
+    let movieList = [];
+    movieFilterList.forEach( movie => {
+      let dict = {};
+      dict["Title"] = movie["original_title"];
+      dict["Year"] = movie["year"];
+      dict["Genre"] = movie["genre"];
+      dict["Runtime"] = movie["duration"];
 
-    try{
-    dict["poster"] = movie["poster"];
-    }
-    catch(err) {
-      dict["poster"] = null;
-    }
-    movieList.push(dict);
-  });
+      try{
+      dict["poster"] = movie["poster"];
+      }
+      catch(err) {
+        dict["poster"] = null;
+      }
+      movieList.push(dict);
+    });
 
-  updateMovieRecs(movieList);
+    updateMovieRecs(movieList);
 
-}
+  }
 
   //Get top 3 movies
   const yScale = d3.scaleLinear().domain( [0, 3] )
@@ -629,13 +596,6 @@ function updateMovieList (filteredMovies) {
    
   }}
   genrebuttons();
-
-//     }
-
-// projectData();
-
-   
-
   
     </script>
 </div>

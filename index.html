@@ -5,14 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <style>
+    body {
+      background: lightgrey;
+    }
+
     .dotchart {
       margin-top: 0px;
     }
     .svgclass {
       border-style: solid;
-      border-color: black;
+      border-color: lightgrey;
       padding: 5px;
-      
+    }
+    .divclass {
+      border-style: solid;
+      border-color: lightgrey;
+      padding: 5px;
+    }
+    h3 {
+      font-family: "Gill Sans", sans-serif;
     }
     .content {
       display: flex;
@@ -23,30 +34,46 @@
     .wrapperColumn {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      width: 40%;
+      align-items: flex-start;
+      min-height: 1000px;
+      height: 100%;
+      width: 100%;
+      padding: 20px;
     }
     .wrapperRow {
       display: flex;
       flex-direction: row;
-      align-items: center;
       justify-content: center;
+      border-radius: 40px;
+      border: 1px solid grey;
+      box-shadow: 0px 8px 40px rgba(128, 128, 128, 0.15);
+      background: #f5f5f5 ;
     }
     .filter {
-      padding-right: 50px;
+      padding: 20px;
     }
-
     .filterbuttons button {
-      width: 5rem;
-      min-height: 5rem;
+      width: 5.5rem;
+      min-height: 3rem;
       border-radius: 0.5rem;
       border: 2px solid #b5bfd9;
       background-color: #fff;
       box-shadow: 0 5px 10px rgba(lightgrey, 0.1);
       transition: 0.15s ease;
       cursor: pointer;
-      position: relative
+      overflow: hidden;
+    }
+    .clearbutton button {
+      width: 11rem;
+      min-height: 3rem;
+      border-radius: 0.5rem;
+      border: 2px solid black;
+      background-color: #e63946;
+      color: white;
+      box-shadow: 0 5px 10px rgba(lightgrey, 0.1);
+      transition: 0.15s ease;
+      cursor: pointer;
+      overflow: hidden;
     }
     .filterbuttons button:hover, .filterbuttons button:active  {
       border-color: black;
@@ -89,7 +116,7 @@
       <br>
       - If you add multiple preferences, add from top to bottom
       <br>
-      - If you recieve a 0% and want to keep filtering, refresh the page or unclick and reclick a genre to start over
+      - If you recieve a 0% and want to keep filtering, refresh the page or press the clear button in the bottom to start over
       <br>
       - Only click one box per question.
     </p>
@@ -107,13 +134,19 @@
           <h3> Do you prefer a production company?</h3>
           <div class="filterbuttons" id="companybuttons"></div>
         </div>
+        <div class="filter">
+          <div class="clearbutton" id="clear"></div>
+        </div>
       </div>
       <div class="wrapperColumn">
-        <div class="dotchart">
-          <h3>How unique is your movie taste?</h3>
-          <svg class = "svgclass" id="svg1" height="320" width="500"></svg> 
+        <div class="filter">
+          <div class="dotchart">
+            <h3>How unique is your movie taste?</h3>
+            <svg class = "svgclass" id="svg1" height="320" width="500"></svg> 
+          </div>
+          <h3>Movie Recommendations</h3>
+          <div class = "divclass" id="recommendations"></div>
         </div>
-        <div id="recommendations"></div>
       </div>
     </div>
   </div>
@@ -146,11 +179,8 @@
                 filterdata = data.filter(function(d){ return d['genre'].includes(i); });
                 // update(filterdata);
                 //count rows in filter data
-                console.log("Added " + i + "!")
                 let percent = filterdata.length;
                 dots(percent);
-                console.log(filterTags);
-                dataset = filterdata;
                 updateMovieList(filterdata);
 
                 map.select("#preferencePERCENT").remove();
@@ -160,17 +190,11 @@
                   .attr("y", 10)
                   .style("font-size", 24);
                   d3.select(`button#${i}`).style("background-color", "lightgrey");
-
-
               } else {
                 filterTags.splice(filterTags.indexOf(i), 1);
                 // filterdata = data.filter(function(d){ return d['genre'].includes(!filterTags); });
                 map.select("#preferencePERCENT").remove();
-                console.log("Removed!")
-                console.log(filterdata.length);
-                console.log(filterTags)
                 d3.select(`button#${i}`).style("background-color", "white");
-
               }
           });
             //count rows in filter data
@@ -193,12 +217,12 @@
           console.log('in era for-each loop')
           d3.select("div#erabuttons")
             .append("button")
-            .attr("id", i)
+            .attr("id", "a" +i)
             .text(i)
             .on("click", function() {
-                if(era.length==0) {
+                if(era.length===0) {
+                  era.push(i)
                   decade = i.slice(0,3)
-                  console.log(decade)
                   filterdata = filterdata.filter(function(d){
                     return d['year'].includes(decade);
                   })
@@ -208,16 +232,15 @@
                   let percent = filterdata.length;
                   dots(percent);
                   updateMovieList(filterdata);
-                  console.log(percent);
                   map.select("#preferencePERCENT").remove();
                   map.append("text").text(percent + "% of movies match your preferences.")
                     .attr("id", "preferencePERCENT")
                     .attr("x", 0)
                     .attr("y", 10);
-                  d3.select(`button#${i}`).style("background-color", "lightgrey");
+                  d3.select(`button#${"a" + i}`).style("background-color", "lightgrey");
                 } else {
                   era.splice(era.indexOf(i), 1);
-                  d3.select(`button#${i}`).style("background-color", "white");
+                  d3.select(`button#${"a" + i}`).style("background-color", "white");
                 }
                 })
 
@@ -227,21 +250,20 @@
         //duration filter
 
         const runtimes = ["60-90", "90-120", "120-150", "150-180", "180-210", "210-240"]
-
+        let run = [];
 
         //90-120 broken?
         runtimes.forEach(function(i) {
-          console.log('in rt for-each loop')
           d3.select("div#rtbuttons")
             .append("button")
+            .attr("id", "a" + i)
             .text(i)
             .on("click", function() {
+              if(run.length===0) { 
+                run.push("a" + i);
                 const interval = i.split('-')
                 start = interval[0]
                 end = interval[1]
-                console.log(interval)
-                console.log(start)
-                console.log(end)
                 filterdata = filterdata.filter(function(d){
                   return d['duration']>=start && d['duration']<=end;
                 })
@@ -252,13 +274,17 @@
                 let percent = filterdata.length;
                 dots(percent);
                 updateMovieList(filterdata);
-                console.log(percent);
                 map.select("#preferencePERCENT").remove();
-                  map.append("text").text(percent + "% of movies match your preferences.")
-                    .attr("id", "preferencePERCENT")
-                    .attr("x", 0)
-                    .attr("y", 10);
-                })
+                map.append("text").text(percent + "% of movies match your preferences.")
+                  .attr("id", "preferencePERCENT")
+                  .attr("x", 0)
+                  .attr("y", 10);
+                d3.select(`button#${"a" + i}`).style("background-color", "lightgrey");
+              } else {
+                  run.splice(run.indexOf("a" + i), 1);
+                  d3.select(`button#${"a" + i}`).style("background-color", "white");
+              }
+              })
                 //move that many dots to the bottom half of the svg
             })
 
@@ -280,7 +306,6 @@
             .on("click", function() {
                 if(direct.length === 0) {
                 direct.push(i.replace(" ", ""));
-                console.log(i);
                 filterdata = filterdata.filter(function(d){
                   return d['director'].includes(i);
                 })
@@ -290,7 +315,6 @@
                 let percent = filterdata.length;
                 dots(percent);
                 updateMovieList(filterdata);
-                console.log(percent);
                 map.select("#preferencePERCENT").remove();
                   map.append("text").text(percent + "% of movies match your preferences.")
                     .attr("id", "preferencePERCENT")
@@ -323,14 +347,12 @@
                 filterdata = filterdata.filter(function(d){
                   return d['production_company'].includes(i);
                 })
-                console.log(prod)
                 // update(filterdata);
                 //count rows in filter data
                 console.log(filterdata);
                 let percent = filterdata.length;
                 dots(percent);
                 updateMovieList(filterdata);
-                console.log(percent);
                 map.select("#preferencePERCENT").remove();
                 map.append("text").text(percent + "% of movies match your preferences.")
                   .attr("id", "preferencePERCENT")
@@ -344,6 +366,26 @@
               })
                 //move that many dots to the bottom half of the svg
             })
+          d3.select('div#clear')
+            .append("button")
+            .attr("id", "clear")
+            .text("Clear")
+            .on("click", function() {
+              filterdata = imdb_small;
+              console.log(filterdata);
+              d3.selectAll("button").style("background-color", "white");
+              d3.select("button#clear").style("background-color", "#e63946")
+              map.select("#preferencePERCENT").remove();
+              let percent = filterdata.length;
+              dots(percent);
+              updateMovieList([]);
+              map.append("text").text("There are a hundred movies initially!")
+                  .attr("id", "preferencePERCENT")
+                  .attr("x", 0)
+                  .attr("y", 10);
+            }
+         )   
+
       
   
      
@@ -385,7 +427,7 @@ function positionOfCircle(isBottom, index) {
 
   color = 'blue';
 
-  console.log(isBottom);
+  // console.log(isBottom);
   if (isBottom === true) {
     yPos += 200;
     color = 'red';
@@ -404,12 +446,12 @@ function positionOfCircle(isBottom, index) {
 }
 
 function dots(percent){
-console.log('running dots')
+// console.log('running dots')
 //set score text at bottom (not working currently)
   var feedbacktext = 'loading';
   if (percent > 50) {
     feedbacktext = 'Your taste is kinda basic..';
-    console.log('in if')
+    // console.log('in if')
   }
   if (30 < percent < 50 ) {
     feedbacktext = 'Your preferences are.. slightly unique'
@@ -427,7 +469,7 @@ console.log('running dots')
  map.append('text').text('Results: ' + results).attr("x", 0).attr("y", 300);
 percentTop= percent;
 //100 movies so can use percent as number of dots
-console.log(percentTop);
+// console.log(percentTop);
 map.selectAll("circle").data(imdb_small, (d,i)=>i)
     .join("circle")
     .attr("class", "dots")
@@ -461,8 +503,6 @@ map.selectAll("circle").data(imdb_small, (d,i)=>i)
     })
 }
 
-
-
   // Add poster links from IMDb 1000 to 100
   imdb_small.forEach((movie) => {
     let movieTitle = imdb_large.find((d) => d["Series_Title"] === movie["original_title"]);
@@ -472,12 +512,9 @@ map.selectAll("circle").data(imdb_small, (d,i)=>i)
     }
     movie["poster"] = poster;
   })
-
-
-  
   
   // Initial percentage text
-  map.append("text").text("Press on some tags to see what percent of movies match!")
+  map.append("text").text("There are a hundred movies initially!")
                   .attr("id", "preferencePERCENT")
                   .attr("x", 0)
                   .attr("y", 10);;
@@ -492,12 +529,13 @@ map.selectAll("circle").data(imdb_small, (d,i)=>i)
   // MOVIE RECOMMENDATIONS SECTION
   const recCanvasHeight = 400;
   const recCanvasWidth = 500;
-  const margins = {top: 10, right: 10, bottom: 50, left: 50};
+  const margins = {top: 20, right: 10, bottom: 20, left: 10};
   const recChartWidth = recCanvasWidth - margins.left - margins.right;
   const recChartHeight = recCanvasHeight - margins.top - margins.bottom;
 
   let recSVG = d3.select("div#recommendations").append("svg")
                   .attr("id", "movieRecSVG")
+                  .attr("class", "movieSVG")
                   .attr("height", recCanvasHeight)
                   .attr("width", recCanvasWidth);
 
@@ -531,11 +569,13 @@ function updateMovieList (filteredMovies) {
   const yScale = d3.scaleLinear().domain( [0, 3] )
                                  .range( [recChartHeight, 0] );
 
-  recSVG.append("text")
-        .attr("x", margins.top)
-        .attr("y", margins.bottom)
-        .text("Movie Recommendations")
-        .attr("class", "recTitle");
+  // recSVG.append("text")
+  //       .attr("x", margins.top)
+  //       .attr("y", margins.bottom)
+  //       .text("Movie Recommendations")
+  //       .style("font-family", "Gill Sans")
+  //       .style("font-weight", "bold")
+  //       .style("font-size", "24px");
 
   function updateMovieRecs (movieRecsArray) {
   d3.selectAll("svg#movieRecSVG > .movie_rec").remove();
@@ -549,28 +589,28 @@ function updateMovieList (filteredMovies) {
       //Title
       recSVG.append("text")
           .attr("x", margins.left + 100)
-          .attr("y",  yScale(i) - 20)
+          .attr("y",  yScale(i) - 70)
           .text(movie["Title"])
           .attr("class", "title movie_rec");
       
       //Year
       recSVG.append("text")
         .attr("x", margins.left + 100)
-        .attr("y",  yScale(i))
+        .attr("y",  yScale(i) - 50)
         .text( "(" + movie["Year"] + ")")
         .attr("class", "year movie_rec");
 
       // Genre
       recSVG.append("text")
         .attr("x", margins.left + 145)
-        .attr("y",  yScale(i))
+        .attr("y",  yScale(i) - 50)
         .text(movie["Genre"])
         .attr("class", "genre movie_rec");
       
-         // Runtime
-         recSVG.append("text")
+      // Runtime
+      recSVG.append("text")
         .attr("x", margins.left + 100)
-        .attr("y",  yScale(i) + 20)
+        .attr("y",  yScale(i) - 30)
         .text("Runtime: "+ movie["Runtime"] + " minutes") //Add percentage match!
         .attr("class", "permatch movie_rec");
 
@@ -585,7 +625,7 @@ function updateMovieList (filteredMovies) {
         recSVG.append("image")
         .attr("href", movie["poster"])
         .attr("x", margins.left)
-        .attr("y", yScale(i) - 70)
+        .attr("y", yScale(i) - 120)
         .attr("width", 75)
         .attr("height", 150)
         .attr("class", "movie_rec");}
@@ -594,12 +634,11 @@ function updateMovieList (filteredMovies) {
         recSVG.append("image")
         .attr("href", "./static/not_found.jpeg")
         .attr("x", margins.left)
-        .attr("y", yScale(i) - 70)
+        .attr("y", yScale(i) - 120)
         .attr("width", 75)
         .attr("height", 150)
         .attr("class", "movie_rec"); };
     });
-   
    
   }}
   genrebuttons();

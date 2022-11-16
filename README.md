@@ -1,6 +1,8 @@
 # INFO 3300 Data Visualization
 by [Laura Fonseca Pauthz, Josette Vignos, Peter Huang, Sung Woo Min]
 
+![alt text](https://github.com/sw-min/movie-recommendations/blob/main/preview.png?raw=true)
+
 #### Contents
   - [Data Description](#Data-Description)
   - [Design Rationale](#design-rationale)
